@@ -1,0 +1,15 @@
+**/bin/
+**/obj/
+.vs/
+*.db-shm
+*.db-wal
+*.tfstate
+*.tfstate.backup
+*.tfvars
+*.auto.tfvars
+.terraform/
+.terraform.lock.hcl
+**/sshkey
+**/sshkey.pub
+**/SSHnøkkelen
+**/SSHnøkkelen.pub
