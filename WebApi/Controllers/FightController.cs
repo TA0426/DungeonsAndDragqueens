@@ -13,6 +13,7 @@ public class FightController(
     GameService gameService) : ControllerBase
 {
     [HttpPost]
+    [HttpPost]
     public async Task<IActionResult> StartFight(StartFightDTO dto)
     {
         if (dto.CharacterId is null ||
