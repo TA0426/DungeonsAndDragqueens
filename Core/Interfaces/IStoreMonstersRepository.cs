@@ -11,7 +11,7 @@ public interface IStoreMonstersRepository
     Task<bool> RemoveAsync(Guid id);
     IEnumerable<StoreMonster> Get();
 
-    
+
     Task<List<StoreMonster>> GetAsync(
         bool? outOfStock,
         int page,
