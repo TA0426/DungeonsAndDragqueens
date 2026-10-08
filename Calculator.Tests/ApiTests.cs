@@ -1,7 +1,7 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net.Http.Json;
-using OppgaveUkeEnModul3.Core;
+using DungeonsAndDragqueens.Core;
 
 
 namespace Calculator.Tests;

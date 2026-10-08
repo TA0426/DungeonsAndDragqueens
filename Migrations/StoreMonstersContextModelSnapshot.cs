@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using OppgaveUkeEnModul3.WebApi.DatabaseContext;
+using DungeonsAndDragqueens.WebApi.DatabaseContext;
 
 #nullable disable
 
-namespace OppgaveUkeEnModul3.Migrations
+namespace DungeonsAndDragqueens.Migrations
 {
     [DbContext(typeof(StoreMonstersContext))]
     partial class StoreMonstersContextModelSnapshot : ModelSnapshot
@@ -22,7 +22,7 @@ namespace OppgaveUkeEnModul3.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("OppgaveUkeEnModul3.Core.CharacterMonsterProgress", b =>
+            modelBuilder.Entity("DungeonsAndDragqueens.Core.CharacterMonsterProgress", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -42,7 +42,7 @@ namespace OppgaveUkeEnModul3.Migrations
                     b.ToTable("CharacterMonsterProgress");
                 });
 
-            modelBuilder.Entity("OppgaveUkeEnModul3.Core.StoreCharacter", b =>
+            modelBuilder.Entity("DungeonsAndDragqueens.Core.StoreCharacter", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -85,7 +85,7 @@ namespace OppgaveUkeEnModul3.Migrations
                     b.ToTable("Characters");
                 });
 
-            modelBuilder.Entity("OppgaveUkeEnModul3.Core.StoreMonster", b =>
+            modelBuilder.Entity("DungeonsAndDragqueens.Core.StoreMonster", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -120,7 +120,7 @@ namespace OppgaveUkeEnModul3.Migrations
                     b.ToTable("StoreMonsters");
                 });
 
-            modelBuilder.Entity("OppgaveUkeEnModul3.Core.StoreSword", b =>
+            modelBuilder.Entity("DungeonsAndDragqueens.Core.StoreSword", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()

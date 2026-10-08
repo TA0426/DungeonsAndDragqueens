@@ -1,4 +1,4 @@
-namespace OppgaveUkeEnModul3.Core;
+namespace DungeonsAndDragqueens.Core;
 
 public class StoreCharacter
 {
@@ -13,4 +13,5 @@ public class StoreCharacter
     public Guid? SwordId { get; set; }
     public int Round { get; set; } = 0;
     public int LastCampRound { get; set; } = 0;
+
 }

@@ -1,6 +1,6 @@
-namespace OppgaveUkeEnModul3.Core.Services;
+namespace DungeonsAndDragqueens.Core.Services;
 
-using OppgaveUkeEnModul3.Core;
+using DungeonsAndDragqueens.Core;
 
 public class FightService
 {

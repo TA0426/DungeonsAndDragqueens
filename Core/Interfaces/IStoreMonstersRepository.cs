@@ -1,6 +1,6 @@
-using OppgaveUkeEnModul3.Core;
+using DungeonsAndDragqueens.Core;
 
-namespace OppgaveUkeEnModul3.Core.Interfaces;
+namespace DungeonsAndDragqueens.Core.Interfaces;
 
 public interface IStoreMonstersRepository
 {
@@ -11,7 +11,7 @@ public interface IStoreMonstersRepository
     Task<bool> RemoveAsync(Guid id);
     IEnumerable<StoreMonster> Get();
 
-
+    
     Task<List<StoreMonster>> GetAsync(
         bool? outOfStock,
         int page,

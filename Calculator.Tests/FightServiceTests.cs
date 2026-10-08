@@ -1,5 +1,5 @@
-using OppgaveUkeEnModul3.Core;
-using OppgaveUkeEnModul3.Core.Services;
+using DungeonsAndDragqueens.Core;
+using DungeonsAndDragqueens.Core.Services;
 
 namespace Calculator.Tests;
 

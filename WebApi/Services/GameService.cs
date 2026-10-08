@@ -1,9 +1,10 @@
-namespace OppgaveUkeEnModul3.WebApi.Services;
+namespace DungeonsAndDragqueens.WebApi.Services;
 
 using Microsoft.EntityFrameworkCore;
-using OppgaveUkeEnModul3.Core;
-using OppgaveUkeEnModul3.Core.Services;
-using OppgaveUkeEnModul3.WebApi.DatabaseContext;
+using DungeonsAndDragqueens.Core;
+using DungeonsAndDragqueens.Core.Services;
+using DungeonsAndDragqueens.WebApi.DatabaseContext;
+
 
 public class GameService(
     StoreMonstersContext database,
@@ -17,8 +18,11 @@ public class GameService(
 
         var character = await database.Characters
             .FirstOrDefaultAsync(character => character.Id == characterId && character.UserId == userId);
+
+
         if (character is null)
             throw new KeyNotFoundException("Character not found.");
+
 
         var monster = await database.StoreMonsters.FindAsync(monsterId);
         if (monster is null)

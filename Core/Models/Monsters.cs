@@ -1,4 +1,4 @@
-namespace OppgaveUkeEnModul3.Core.Models;
+namespace DungeonsAndDragqueens.Core.Models;
 
 public class Monsters(guid monsterid, string monstername, int quantity, string typeOfMonster, int monsterHp, int monsterDamage)
 {

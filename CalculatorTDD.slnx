@@ -1,4 +1,5 @@
 <Solution>
-  <Project Path="OppgaveUkeEnModul3.csproj" />
+  <Project Path="ConsoleApp/ConsoleApp.csproj" />
   <Project Path="Calculator.Tests/Calculator.Tests.csproj" />
+  <Project Path="DungeonsAndDragqueens.csproj" />
 </Solution>

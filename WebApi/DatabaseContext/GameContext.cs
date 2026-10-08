@@ -1,7 +1,7 @@
-namespace OppgaveUkeEnModul3.WebApi.DatabaseContext;
+namespace DungeonsAndDragqueens.WebApi.DatabaseContext;
 
 using Microsoft.EntityFrameworkCore;
-using OppgaveUkeEnModul3.Core;
+using DungeonsAndDragqueens.Core;
 
 public class GameContext(
     DbContextOptions<GameContext> options)

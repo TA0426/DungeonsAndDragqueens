@@ -1,4 +1,4 @@
-namespace OppgaveUkeEnModul3.Core.Models;
+namespace DungeonsAndDragqueens.Core.Models;
 
 public class Swords(guid swordid, string swordName, int quantity, string typeOfSword, int swordDamage, string description)
 {

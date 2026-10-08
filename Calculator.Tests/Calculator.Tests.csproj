@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-  <ProjectReference Include="..\OppgaveUkeEnModul3.csproj" />
+  <ProjectReference Include="..\DungeonsAndDragqueens.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,8 +1,9 @@
-namespace OppgaveUkeEnModul3.WebApi.Services;
+namespace DungeonsAndDragqueens.WebApi.Services;
 
-using OppgaveUkeEnModul3.Core.Interfaces;
+using DungeonsAndDragqueens.Core.Interfaces;
 
-using OppgaveUkeEnModul3.Core;
+using DungeonsAndDragqueens.Core;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 public class StoreMonstersService(
     IStoreMonstersRepository repository, StoreMonsterBuilder builder) : IStoreMonstersService

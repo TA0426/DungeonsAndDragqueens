@@ -1,6 +1,6 @@
-namespace OppgaveUkeEnModul3.WebApi.Services;
+namespace DungeonsAndDragqueens.WebApi.Services;
 
-using OppgaveUkeEnModul3.Core;
+using DungeonsAndDragqueens.Core;
 
 
 public interface IStoreMonstersService

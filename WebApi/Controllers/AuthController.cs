@@ -1,36 +1,60 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
 
-namespace OppgaveUkeEnModul3.WebApi.Controllers;
+namespace DungeonsAndDragqueens.WebApi.Controllers;
+
+
+// For fremtidig forbedring kunne jeg lagt inn adminprivilegier med 403 forbidden feil hvis en vanlig bruker prøver å DELETE.
+/* [Authorize(Roles = "Admin")]
+[HttpDelete("{id:guid}")]
+public async Task<IActionResult> Delete(Guid id)
+{
+    ...
+} */
+
+
 
 [ApiController]
 [Route("auth")]
-public class AuthController : ControllerBase
+public class AuthController(IConfiguration configuration) : ControllerBase
 {
-    [HttpGet("token")]
-    public IActionResult ReadToken()
+
+    [HttpPost("login")]
+    public IActionResult Login(LoginRequest request)
     {
-        var authorization = Request.Headers.Authorization.ToString();
-
-        if (!authorization.StartsWith("Bearer "))
-            return BadRequest("Missing Bearer token.");
-
-        var token = authorization["Bearer ".Length..].Trim();
-
-        try
+        if (request.Username != "player" || request.Password != "password123")
         {
-            var handler = new JwtSecurityTokenHandler();
-            var jwt = handler.ReadJwtToken(token);
+            return Unauthorized("Feil brukernavn eller passord.");
+        }
 
-            return Ok(jwt.Claims.Select(claim => new
-            {
-                claim.Type,
-                claim.Value
-            }));
-        }
-        catch (ArgumentException)
+        var claims = new[]
         {
-            return BadRequest("Invalid JWT token.");
-        }
+            new Claim(ClaimTypes.Name, request.Username),
+            new Claim(ClaimTypes.NameIdentifier, "player-1")
+        };
+
+        var key = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!));
+
+        var credentials = new SigningCredentials(
+            key,
+            SecurityAlgorithms.HmacSha256);
+
+        var token = new JwtSecurityToken(
+            claims: claims,
+            expires: DateTime.UtcNow.AddHours(1),
+            signingCredentials: credentials);
+
+        var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+        return Ok(new LoginResponse(tokenString));
     }
 }
+
+public record LoginRequest(string Username, string Password);
+
+public record LoginResponse(string Token);

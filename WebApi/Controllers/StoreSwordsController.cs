@@ -1,72 +1,60 @@
-namespace OppgaveUkeEnModul3.WebApi.Controllers;
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OppgaveUkeEnModul3.Core;
-using Microsoft.EntityFrameworkCore;
-using OppgaveUkeEnModul3.WebApi.DatabaseContext;
+using DungeonsAndDragqueens.Core;
+using DungeonsAndDragqueens.WebApi.Services;
+
+namespace DungeonsAndDragqueens.WebApi.Controllers;
 
 [ApiController]
 [Route("/[controller]")]
-public class StoreSwordsController : ControllerBase
+public class StoreSwordsController(
+    SwordService service) : ControllerBase
 {
-    private readonly StoreMonstersContext database;
-
-    public StoreSwordsController(StoreMonstersContext database)
-    {
-        this.database = database;
-    }
-
     [HttpGet]
     public async Task<ActionResult<List<StoreSword>>> Get()
     {
-        var swords = await database.Swords
-            .AsNoTracking()
-            .ToListAsync();
+        var swords = await service.GetAsync();
 
         return Ok(swords);
     }
 
     [HttpGet("{id:guid}")]
-    public IActionResult Get(Guid id)
+    public async Task<IActionResult> Get(Guid id)
     {
-        var sword = database.Swords.FirstOrDefault(
-            sword => sword.Id == id);
+        var sword = await service.GetAsync(id);
 
-        return sword is null
-            ? NotFound()
-            : Ok(sword);
+        if (sword is null)
+        {
+            return NotFound(new
+            {
+                error = "Sword not found."
+            });
+        }
+
+        return Ok(sword);
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Post(CreateSwordDTO dto)
     {
-        var sword = new StoreSword
-        {
-            Name = dto.Name,
-            Damage = dto.Damage,
-            Description = dto.Description
-        };
-
-        database.Swords.Add(sword);
-        await database.SaveChangesAsync();
+        var sword = await service.CreateAsync(dto);
 
         return Created(
             $"/StoreSwords/{sword.Id}",
             sword);
     }
 
+    [Authorize]
     [HttpDelete("{id:guid}")]
-    public IActionResult Delete(Guid id)
+    public async Task<IActionResult> Delete(Guid id)
     {
-        var sword = database.Swords.FirstOrDefault(
-            sword => sword.Id == id);
+        var deleted = await service.DeleteAsync(id);
 
-        if (sword is null)
+        if (!deleted)
             return NotFound();
 
-        database.Swords.Remove(sword);
-        database.SaveChanges();
-
         return NoContent();
+
     }
 }

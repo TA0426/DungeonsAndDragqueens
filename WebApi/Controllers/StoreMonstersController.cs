@@ -1,8 +1,8 @@
-namespace OppgaveUkeEnModul3.WebApi.Controllers;
+namespace DungeonsAndDragqueens.WebApi.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
-using OppgaveUkeEnModul3.Core;
-using OppgaveUkeEnModul3.WebApi.Services;
+using DungeonsAndDragqueens.Core;
+using DungeonsAndDragqueens.WebApi.Services;
 
 [ApiController]
 [Route("/[controller]")]
@@ -10,15 +10,29 @@ public class StoreMonstersController(
     IStoreMonstersService service) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<List<StoreMonster>>> Get()
+    public async Task<ActionResult<List<StoreMonster>>> Get(
+    [FromQuery] bool? outOfStock,
+    [FromQuery] int page = 1,
+    [FromQuery] int pageSize = 100,
+    [FromQuery] string? sortBy = null)
     {
-        var monsters = await service.GetAsync(
-            null,
-            1,
-            100,
-            null);
+        try
+        {
+            var monsters = await service.GetAsync(
+                outOfStock,
+                page,
+                pageSize,
+                sortBy);
 
-        return Ok(monsters);
+            return Ok(monsters);
+        }
+        catch (ArgumentException exception)
+        {
+            return BadRequest(new
+            {
+                error = exception.Message
+            });
+        }
     }
 
     [HttpGet("{id:guid}")]
@@ -26,9 +40,15 @@ public class StoreMonstersController(
     {
         var monster = await service.GetAsync(id);
 
-        return monster is null
-            ? NotFound()
-            : Ok(monster);
+        if (monster is null)
+        {
+            return NotFound(new
+            {
+                error = "Monster not found."
+            });
+        }
+
+        return Ok(monster);
     }
 
     [HttpPost]
@@ -46,8 +66,14 @@ public class StoreMonstersController(
     {
         var deleted = await service.DeleteAsync(id);
 
-        return deleted
-            ? NoContent()
-            : NotFound();
+        if (!deleted)
+        {
+            return NotFound(new
+            {
+                error = "Monster not found."
+            });
+        }
+
+        return NoContent();
     }
 }

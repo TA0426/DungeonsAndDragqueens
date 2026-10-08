@@ -1,7 +1,7 @@
-namespace OppgaveUkeEnModul3.WebApi.DatabaseContext;
+namespace DungeonsAndDragqueens.WebApi.DatabaseContext;
 
-using OppgaveUkeEnModul3.Core;
-using OppgaveUkeEnModul3.Core.Interfaces;
+using DungeonsAndDragqueens.Core;
+using DungeonsAndDragqueens.Core.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 

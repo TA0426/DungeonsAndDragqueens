@@ -1,5 +1,13 @@
-namespace OppgaveUkeEnModul3.Core;
+namespace DungeonsAndDragqueens.Core;
 
-public record StartFightDTO(
-   Guid CharacterId,
-   Guid MonsterId);
+using System.ComponentModel.DataAnnotations;
+
+
+public record StartFightDTO
+{
+   [Required]
+   public Guid? CharacterId { get; set; }
+
+   [Required]
+   public Guid? MonsterId { get; set; }
+}

@@ -1,4 +1,4 @@
-using OppgaveUkeEnModul3.Core;
+using DungeonsAndDragqueens.Core;
 
 public class StoreMonsterBuilder
 {
