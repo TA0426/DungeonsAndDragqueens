@@ -7,6 +7,7 @@ namespace DungeonsAndDragqueens.WebApi.Controllers;
 
 [ApiController]
 [Route("/[controller]")]
+[Authorize]
 public class StoreSwordsController(
     SwordService service) : ControllerBase
 {
@@ -34,7 +35,6 @@ public class StoreSwordsController(
         return Ok(sword);
     }
 
-    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Post(CreateSwordDTO dto)
     {
@@ -45,7 +45,6 @@ public class StoreSwordsController(
             sword);
     }
 
-    [Authorize]
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Delete(Guid id)
     {

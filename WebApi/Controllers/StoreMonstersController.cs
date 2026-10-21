@@ -1,11 +1,13 @@
 namespace DungeonsAndDragqueens.WebApi.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using DungeonsAndDragqueens.Core;
 using DungeonsAndDragqueens.WebApi.Services;
 
 [ApiController]
 [Route("/[controller]")]
+[Authorize]
 public class StoreMonstersController(
     IStoreMonstersService service) : ControllerBase
 {

@@ -19,6 +19,8 @@ services:
     environment:
       ConnectionStrings__DefaultConnection: Host=db;Port=5432;Database=database;Username=postgres;Password=postgres
       Jwt__Key: development-only-key-change-for-real-environments
+      Jwt__Issuer: DungeonsAndDragqueens
+      Jwt__Audience: DungeonsAndDragqueens.Browser
       ASPNETCORE_URLS: http://+:8080
     ports:
       - "8080:8080"

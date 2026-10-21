@@ -33,8 +33,6 @@ public class GameService(
                 progress =>
                     progress.CharacterId == characterId &&
                     progress.MonsterId == monsterId);
-        var enemiesBeforeFight = monster.Quantity;
-
         if (progress is null)
         {
             progress = new CharacterMonsterProgress
@@ -46,6 +44,11 @@ public class GameService(
 
             database.CharacterMonsterProgress.Add(progress);
         }
+
+        if (progress.RemainingQuantity <= 0)
+            throw new InvalidOperationException("This character has defeated all monsters of this type.");
+
+        var enemiesBeforeFight = progress.RemainingQuantity;
         StoreSword? sword = null;
         if (character.SwordId is not null)
         {
@@ -54,7 +57,7 @@ public class GameService(
 
         var result = fightService.Fight(character, monster, sword, progress);
         result.EnemiesBeforeFight = enemiesBeforeFight;
-        result.EnemiesAfterFight = monster.Quantity;
+        result.EnemiesAfterFight = progress.RemainingQuantity;
         character.Round++;
         await database.SaveChangesAsync();
 
@@ -115,9 +118,15 @@ public class GameService(
             }
         }
 
-        var allMonstersDefeated =
-            !await database.StoreMonsters
-            .AnyAsync(monster => monster.Quantity > 0);
+        var monsterCatalog = await database.StoreMonsters
+            .AsNoTracking()
+            .Select(monster => new { monster.Id, monster.Quantity })
+            .ToListAsync();
+        var remainingByMonster = await database.CharacterMonsterProgress
+            .Where(progress => progress.CharacterId == characterId)
+            .ToDictionaryAsync(progress => progress.MonsterId, progress => progress.RemainingQuantity);
+        var allMonstersDefeated = monsterCatalog.All(monster =>
+            remainingByMonster.GetValueOrDefault(monster.Id, monster.Quantity) <= 0);
 
         result.AllMonstersDefeated = allMonstersDefeated;
 

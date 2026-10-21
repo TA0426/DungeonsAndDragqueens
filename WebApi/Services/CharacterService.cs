@@ -57,6 +57,13 @@ public class CharacterService(StoreMonstersContext database)
 
         return character;
     }
+
+    public Task<StoreSword?> GetSwordAsync(Guid swordId)
+    {
+        return database.Swords
+            .AsNoTracking()
+            .FirstOrDefaultAsync(sword => sword.Id == swordId);
+    }
     public async Task<CampResult> CampAsync(
         Guid characterId,
         string userId)

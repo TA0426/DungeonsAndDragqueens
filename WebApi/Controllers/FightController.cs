@@ -13,7 +13,6 @@ public class FightController(
     GameService gameService) : ControllerBase
 {
     [HttpPost]
-    [HttpPost]
     public async Task<IActionResult> StartFight(StartFightDTO dto)
     {
         if (dto.CharacterId is null ||
@@ -30,11 +29,22 @@ public class FightController(
         if (userId is null)
             return Unauthorized();
 
-        var result = await gameService.StartFightAsync(
-            dto.CharacterId.Value,
-            dto.MonsterId.Value,
-            userId);
+        try
+        {
+            var result = await gameService.StartFightAsync(
+                dto.CharacterId.Value,
+                dto.MonsterId.Value,
+                userId);
 
-        return Ok(result);
+            return Ok(result);
+        }
+        catch (KeyNotFoundException exception)
+        {
+            return NotFound(new { error = exception.Message });
+        }
+        catch (InvalidOperationException exception)
+        {
+            return Conflict(new { error = exception.Message });
+        }
     }
 }

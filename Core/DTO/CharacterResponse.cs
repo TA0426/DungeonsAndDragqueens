@@ -7,4 +7,5 @@ public record CharacterResponse(
     string Name,
     int Hp,
     int Damage,
-    int Level);
+    int Level,
+    Guid? SwordId);

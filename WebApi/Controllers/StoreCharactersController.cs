@@ -27,7 +27,8 @@ public class StoreCharactersController(CharacterService service) : ControllerBas
                 character.Name,
                 character.Hp,
                 character.Damage,
-                character.Level))
+                character.Level,
+                character.SwordId))
             .ToList();
 
         return Ok(response);
@@ -54,7 +55,8 @@ public class StoreCharactersController(CharacterService service) : ControllerBas
             character.Name,
             character.Hp,
             character.Damage,
-            character.Level));
+            character.Level,
+            character.SwordId));
     }
 
     [HttpPost]
@@ -72,7 +74,8 @@ public class StoreCharactersController(CharacterService service) : ControllerBas
             character.Name,
             character.Hp,
             character.Damage,
-            character.Level);
+            character.Level,
+            character.SwordId);
 
         return Created(
             $"/StoreCharacters/{character.Id}",
@@ -97,7 +100,13 @@ public class StoreCharactersController(CharacterService service) : ControllerBas
         if (character is null)
             return NotFound("Character or sword not found.");
 
-        return Ok(character);
+        var sword = await service.GetSwordAsync(character.SwordId!.Value);
+
+        return Ok(new
+        {
+            swordName = sword?.Name,
+            swordDamage = sword?.Damage
+        });
     }
 
     [HttpPost("{id:guid}/camp")]

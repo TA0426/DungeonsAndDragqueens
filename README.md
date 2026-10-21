@@ -1,40 +1,48 @@
-# XP og Level REST API
+# Dungeons & Dragqueens
 
-Dette prosjektet er laget som en TDD-oppgave
+A browser-based, text-first RPG backed by ASP.NET Core, PostgreSQL, and a small JavaScript client. Players can create an account, build characters, fight monsters, collect XP, equip swords, and rest at camp.
 
-Systemet lar brukeren:
+## Run with Docker Compose
 
-- Opprette karakterer
-- Opprette monstre
-- Starte kamper
-- Få XP etter vunnet kamp
-- Gå opp i level
-- Equipe sverd
-- Hvile ved camp
+Start the browser game, API, and PostgreSQL:
 
-## Kjøre prosjektet
+```powershell
+docker compose up --build
+```
 
-Kjør API-et med:
+Open [http://localhost:8080](http://localhost:8080). PostgreSQL data is kept in the `postgres_data` volume. `docker compose down` keeps that data; `docker compose down -v` deletes it.
 
-dotnet run
+The Compose file contains development credentials and a development-only JWT key. Replace them before using this setup outside your own development machine.
 
-API-et starter med SQLite-databasen `monsters.db`.
+## Run locally
 
-## Kjøre testene
+Start PostgreSQL first, then run the API from the repository root:
 
-Kjør alle tester med:
+```powershell
+docker compose up -d db
+dotnet run --project .\DungeonsAndDragqueens.csproj
+```
 
-dotnet test
+Open [http://localhost:5209](http://localhost:5209). The app applies EF Core migrations and adds starter monsters and swords if those catalogs are empty. Local PostgreSQL uses `Host=localhost`; the API container uses `Host=db`.
 
-## TDD
+## Accounts
 
-Noe av domenelogikken ble utviklet med Red-Green-Refactor:
+Create an account in the browser or call `POST /auth/register`. Usernames are 3–32 letters, digits, underscores, or hyphens. Passwords must be at least 12 characters. Passwords are stored as hashes. Login returns a short-lived JWT, and characters are scoped to the account that created them.
 
-- Jeg startet først med å skrive tester, men etterhvert som jeg starter å kode ble jeg oppslukt i å gjøre spillet mer og mer avansert og glemte helt ut at jeg skulle gjøre TDD^^
-- Etter jeg innså dette, fjernet jeg all kode og startet opp et nytt prosjekt, og kjørte deretter testene en og en, for så å legge inn koden jeg trengte fra det gamle prosjektet for å få testene til å bli grønne. Håper det går greit at jeg løste det slik. Skal ikke glemme meg ut neste gang...
+The browser keeps the token in `sessionStorage` for the current tab session. Log out to remove it. Use HTTPS and a private signing key outside development.
 
-## Dokumentasjon
+## Music
 
-API-kontrakten finnes i `api.md`.
+Put your own `.mp3`, `.ogg`, or `.wav` files in `wwwroot/audio`, then list them in `wwwroot/audio/tracks.json`. The browser waits for the player to press Play before starting audio.
 
-MVP-skissen finnes i `skisse til programflyt.excalidraw`.
+## Projects
+
+- `DungeonsAndDragqueens.csproj` — API and browser host
+- `DungeonsAndDragqueens.Tests/` — automated tests
+- `ConsoleApp/` — optional command-line client
+- `Core/` — game models, DTOs, and combat rules
+- `WebApi/` — controllers, database context, and application services
+- `Migrations/` — PostgreSQL schema history
+- `DungeonsAndDragqueens.Infrastructure/` — Terraform deployment files
+
+API routes and example requests are in [api.md](api.md); the HTTP scratch file is [DungeonsAndDragqueens.http](DungeonsAndDragqueens.http).

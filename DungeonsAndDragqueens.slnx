@@ -1,5 +1,5 @@
 <Solution>
   <Project Path="ConsoleApp/ConsoleApp.csproj" />
-  <Project Path="Calculator.Tests/Calculator.Tests.csproj" />
   <Project Path="DungeonsAndDragqueens.csproj" />
+  <Project Path="DungeonsAndDragqueens.Tests/DungeonsAndDragqueens.Tests.csproj" />
 </Solution>

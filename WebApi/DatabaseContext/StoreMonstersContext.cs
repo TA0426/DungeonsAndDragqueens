@@ -2,6 +2,7 @@ namespace DungeonsAndDragqueens.WebApi.DatabaseContext;
 
 using DungeonsAndDragqueens.Core;
 using DungeonsAndDragqueens.Core.Interfaces;
+using DungeonsAndDragqueens.Core.Models;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +15,14 @@ public class StoreMonstersContext(
     public DbSet<StoreSword> Swords => Set<StoreSword>();
     public DbSet<CharacterMonsterProgress> CharacterMonsterProgress =>
     Set<CharacterMonsterProgress>();
+    public DbSet<PlayerAccount> PlayerAccounts => Set<PlayerAccount>();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<PlayerAccount>()
+            .HasIndex(account => account.NormalizedUserName)
+            .IsUnique();
+    }
 
     public StoreMonster Add(StoreMonster monster)
     {

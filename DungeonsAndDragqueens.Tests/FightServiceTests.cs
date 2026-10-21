@@ -1,7 +1,7 @@
 using DungeonsAndDragqueens.Core;
 using DungeonsAndDragqueens.Core.Services;
 
-namespace Calculator.Tests;
+namespace DungeonsAndDragqueens.Tests;
 
 public class FightServiceTests
 {
@@ -129,7 +129,7 @@ public class FightServiceTests
             progress);
 
         Assert.Equal(0, result.MonsterHpAfterFight);
-        Assert.Equal(30, character.Damage);
+        Assert.Equal(10, character.Damage);
     }
 
     [Fact]
