@@ -1,20 +1,42 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net.Http.Json;
-using OppgaveUkeEnModul3.Core;
+using DungeonsAndDragqueens.Core;
 
 
-namespace Calculator.Tests;
+namespace DungeonsAndDragqueens.Tests;
 
 public class ApiTests
 {
+    private static async Task<HttpClient> CreateAuthenticatedClientAsync(
+        WebApplicationFactory<Program> factory)
+    {
+        var client = factory.CreateClient();
+        var registration = await client.PostAsJsonAsync(
+            "/auth/register",
+            new
+            {
+                userName = $"player_{Guid.NewGuid():N}"[..15],
+                password = "a-strong-test-password"
+            });
+        registration.EnsureSuccessStatusCode();
+
+        var login = await registration.Content
+            .ReadFromJsonAsync<LoginResponse>();
+        client.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue(
+                "Bearer",
+                login!.Token);
+        return client;
+    }
+
     [Fact]
     public async Task GetCharacters_ReturnsOk()
     {
         await using var factory =
             new WebApplicationFactory<Program>();
 
-        using var client = factory.CreateClient();
+        using var client = await CreateAuthenticatedClientAsync(factory);
 
         var response =
             await client.GetAsync("/StoreCharacters");
@@ -30,7 +52,7 @@ public class ApiTests
         await using var factory =
             new WebApplicationFactory<Program>();
 
-        using var client = factory.CreateClient();
+        using var client = await CreateAuthenticatedClientAsync(factory);
 
         var response = await client.PostAsJsonAsync(
             "/StoreCharacters",
@@ -50,7 +72,7 @@ public class ApiTests
         await using var factory =
             new WebApplicationFactory<Program>();
 
-        using var client = factory.CreateClient();
+        using var client = await CreateAuthenticatedClientAsync(factory);
 
         var characterResponse = await client.PostAsJsonAsync(
             "/StoreCharacters",
@@ -62,21 +84,10 @@ public class ApiTests
         var character =
             await characterResponse.Content.ReadFromJsonAsync<StoreCharacter>();
 
-        var monsterResponse = await client.PostAsJsonAsync(
-            "/StoreMonsters",
-            new
-            {
-                name = "Weak Monster",
-                quantity = 1,
-                typeOfMonster = "Goblin",
-                hp = 10,
-                damage = 1,
-                xpReward = 10,
-                description = "A weak test monster"
-            });
-
-        var monster =
-            await monsterResponse.Content.ReadFromJsonAsync<StoreMonster>();
+        var monsters = await client.GetFromJsonAsync<List<StoreMonster>>(
+            "/StoreMonsters?page=1&pageSize=100");
+        var monster = monsters!.FirstOrDefault(candidate => candidate.Quantity > 0);
+        Assert.NotNull(monster);
 
         var fightResponse = await client.PostAsJsonAsync(
             "/Fight",
@@ -91,3 +102,5 @@ public class ApiTests
             fightResponse.StatusCode);
     }
 }
+
+public record LoginResponse(string Token, string UserName);

@@ -1,145 +1,52 @@
-# API-kontrakt
+# API contract
 
-## Opprett karakter
+The browser client is served by the API at `/`. Protected routes require `Authorization: Bearer <token>`.
 
-POST /StoreCharacters
+## Accounts
 
-Request:
+### Register
 
+`POST /auth/register`
+
+```json
 {
-"name": "Anna"
+  "userName": "example_player",
+  "password": "a-password-with-12-chars"
 }
+```
 
-Response:
+Returns `200 OK` and a JWT. Usernames must be 3–32 letters, digits, `_` or `-`; passwords must be 12–128 characters. Duplicate usernames return `409 Conflict`.
 
-- 201 Created
-- Returnerer den opprettede karakteren
+### Log in
 
-## Hent alle karakterer
+`POST /auth/login` with the same JSON shape. Returns a JWT or `401 Unauthorized`.
 
-GET /StoreCharacters
+## Game
 
-Response:
+All routes below require a valid JWT.
 
-- 200 OK
-- Returnerer en liste med karakterer
+| Method | Route | Purpose |
+| --- | --- | --- |
+| `GET` | `/StoreCharacters` | List the signed-in player's characters |
+| `GET` | `/StoreCharacters/{id}` | Get one of the player's characters |
+| `POST` | `/StoreCharacters` | Create a character: `{ "name": "Anna" }` |
+| `PUT` | `/StoreCharacters/{characterId}/equipment/{swordId}` | Equip a sword |
+| `POST` | `/StoreCharacters/{id}/camp` | Rest after the required rounds |
+| `GET` | `/StoreMonsters?page=1&pageSize=100` | Browse monsters |
+| `GET` | `/StoreSwords` | Browse swords |
+| `POST` | `/Fight` | Fight a monster |
+| `POST` | `/StoreMonsters` | Add a monster to the shared catalog |
+| `DELETE` | `/StoreMonsters/{id}` | Remove a monster from the shared catalog |
+| `POST` | `/StoreSwords` | Add a sword to the shared catalog |
+| `DELETE` | `/StoreSwords/{id}` | Remove a sword from the shared catalog |
 
-## Opprett monster
+Fight request:
 
-POST /StoreMonsters
-
-Request:
-
+```json
 {
-"name": "Goblin",
-"quantity": 1,
-"typeOfMonster": "Goblin",
-"hp": 10,
-"damage": 1,
-"xpReward": 10,
-"description": "Et svakt monster"
+  "characterId": "character-guid",
+  "monsterId": "monster-guid"
 }
+```
 
-Response:
-
-- 201 Created
-- Returnerer det opprettede monsteret
-
-## Hent alle monstre
-
-GET /StoreMonsters
-
-Response:
-
-- 200 OK
-- Returnerer en liste med monstre
-
-## Lagre og hente sverd
-
-GET /StoreSwords
-
-Response:
-
-- 200 OK
-- Returnerer liste med sverd
-- 404 NotFound
-- Ingen sverd funnet
-
-Post /StoreSwords
-
-Request:
-{
-Name = dto.Name,
-Damage = dto.Damage,
-Description = dto.Description
-}
-
-Response:
-
-- 201 created
-- Returnerer det opprettede sverdet
-
-## Start kamp
-
-POST /StartFight
-
-Request:
-
-{
-"characterId": "character-guid",
-"monsterId": "monster-guid"
-}
-
-Response:
-
-- 200 OK
-- Returnerer resultatet fra kampen
-
-Eksempel på response:
-
-{
-"characterName": "Anna",
-"monsterName": "Goblin",
-"characterHpAfterFight": 299,
-"monsterHpAfterFight": 0,
-"characterWon": true,
-"enemiesBeforeFight": 1,
-"enemiesAfterFight": 0
-}
-
-## Utstyr karakter med sverd
-
-PUT /StoreCharacters/{characterId}/equipment/{swordId}
-
-Response:
-
-- 200 OK
-- 404 Not Found dersom karakteren eller sverdet ikke finnes
-
-## Hvil
-
-POST /StoreCharacters/{characterId}/camp
-
-Response:
-
-- 200 OK dersom karakteren kan hvile
-- 400 Bad Request dersom det ikke har gått nok runder
-- 404 Not Found dersom karakteren ikke finnes
-
-## Slett monster
-
-DELETE /StoreMonsters/{id}
-
-Response:
-
-- 204 No Content
-- 404 Not Found dersom monsteret ikke finnes
-
-## Slett sverd
-
-DELETE /StoreSwords/{id}
-
-Response:
-
-- 204 No Content
-- 404 Not Found dersom sverdet ikke finnes
+Character routes only return or change characters owned by the JWT's user ID. Monsters and swords are shared game catalog entries.

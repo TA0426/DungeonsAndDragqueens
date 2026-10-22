@@ -1,4 +1,4 @@
-namespace OppgaveUkeEnModul3.Core;
+namespace DungeonsAndDragqueens.Core;
 
 public class StoreSword
 {
@@ -6,4 +6,5 @@ public class StoreSword
     public string Name { get; set; } = "";
     public int Damage { get; set; }
     public string Description { get; set; } = "";
+    public string AsciiArt { get; set; } = "";
 }

@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace OppgaveUkeEnModul3.WebApi.Extensions;
+namespace DungeonsAndDragqueens.WebApi.Extensions;
 
 public static class ClaimsPrincipalExtensions
 {

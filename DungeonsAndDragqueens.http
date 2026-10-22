@@ -1,0 +1,26 @@
+@DungeonsAndDragqueens_HostAddress = http://localhost:5209
+@Token = paste-login-token-here
+
+### Register (password must contain at least 12 characters)
+POST {{DungeonsAndDragqueens_HostAddress}}/auth/register
+Content-Type: application/json
+
+{
+  "userName": "example_player",
+  "password": "this-is-a-long-demo-password"
+}
+
+### List your characters
+GET {{DungeonsAndDragqueens_HostAddress}}/StoreCharacters
+Authorization: Bearer {{Token}}
+Accept: application/json
+
+### List available monsters
+GET {{DungeonsAndDragqueens_HostAddress}}/StoreMonsters?page=1&pageSize=100
+Authorization: Bearer {{Token}}
+Accept: application/json
+
+### List swords
+GET {{DungeonsAndDragqueens_HostAddress}}/StoreSwords
+Authorization: Bearer {{Token}}
+Accept: application/json

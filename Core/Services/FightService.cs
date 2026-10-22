@@ -1,6 +1,6 @@
-namespace OppgaveUkeEnModul3.Core.Services;
+namespace DungeonsAndDragqueens.Core.Services;
 
-using OppgaveUkeEnModul3.Core;
+using DungeonsAndDragqueens.Core;
 
 public class FightService
 {
@@ -15,7 +15,10 @@ public class FightService
     StoreCharacter character,
     StoreMonster monster,
     StoreSword? sword,
-    CharacterMonsterProgress progress)
+    CharacterMonsterProgress progress,
+    IEnumerable<StoreArmor>? armor = null,
+    int swordLevel = 1,
+    IReadOnlyDictionary<Guid, int>? armorLevels = null)
     {
         var battleLog = new List<string>();
         var characterDamage = character.Damage;
@@ -24,11 +27,18 @@ public class FightService
 
         if (sword is not null)
         {
-            characterDamage += sword.Damage;
+            characterDamage += GearStats.AtLevel(sword.Damage, swordLevel);
 
             battleLog.Add(
                 $"{character.Name} uses {sword.Name}.");
         }
+
+        var armorPieces = armor?.ToList() ?? [];
+        var defense = armorPieces.Sum(piece => GearStats.AtLevel(piece.Defense, armorLevels?.GetValueOrDefault(piece.Id) ?? 1));
+        var swordBonus = armorPieces.Sum(piece => GearStats.AtLevel(piece.SwordDamageBonus, armorLevels?.GetValueOrDefault(piece.Id) ?? 1));
+        characterDamage += swordBonus;
+        if (swordBonus > 0)
+            battleLog.Add($"Armor grants +{swordBonus} sword damage.");
 
         while (character.Hp > 0 && monsterHp > 0)
         {
@@ -95,9 +105,8 @@ public class FightService
 
             var characterHpBefore = character.Hp;
 
-            character.Hp = Math.Max(
-                0,
-                character.Hp - monster.Damage);
+            var damageAfterArmor = Math.Max(1, monster.Damage - defense);
+            character.Hp = Math.Max(0, character.Hp - damageAfterArmor);
 
             var damageReceived =
                 characterHpBefore - character.Hp;
@@ -105,6 +114,8 @@ public class FightService
             battleLog.Add(
                 $"{monster.Name} attacks {character.Name} " +
                 $"and deals {damageReceived} damage.");
+            if (defense > 0)
+                battleLog.Add($"Armor blocked {monster.Damage - damageReceived} damage.");
 
             battleLog.Add(
                 $"{character.Name} has {character.Hp} HP left.");
@@ -123,7 +134,9 @@ public class FightService
             CharacterName = character.Name,
             MonsterName = monster.Name,
             CharacterHpAfterFight = character.Hp,
+            CharacterMaxHp = character.MaxHp,
             MonsterHpAfterFight = monsterHp,
+            MonsterMaxHp = monster.Hp,
             CharacterWon = monsterHp <= 0,
             XpGained = monsterHp <= 0
                 ? monster.XPReward

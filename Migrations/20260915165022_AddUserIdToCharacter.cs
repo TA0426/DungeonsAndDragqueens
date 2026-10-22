@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace OppgaveUkeEnModul3.Migrations
+namespace DungeonsAndDragqueens.Migrations
 {
     /// <inheritdoc />
     public partial class AddUserIdToCharacter : Migration

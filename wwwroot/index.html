@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1"
+		/>
+		<meta name="theme-color" content="#11150f" />
+		<title>Dungeons &amp; Dragqueens</title>
+		<link rel="stylesheet" href="/css/game.css?v=20261022-12" />
+		<script src="/js/game.js?v=20261022-12" defer></script>
+	</head>
+	<body>
+		<main class="shell">
+			<header class="topbar">
+				<a
+					class="brand"
+					href="/"
+					aria-label="Dungeons and Dragqueens home"
+				>
+					<pre class="brand-mark" aria-hidden="true">  ^&#10; (o.o)&#10; /|#|\&#10;&lt;|||&gt;&#10; / \</pre>
+					<span>DUNGEONS <i>&amp;</i> DRAGQUEENS</span>
+				</a>
+				<div class="topbar-right">
+					<span class="connection"
+						><span class="status-dot"></span
+						><span id="connection-status">SYSTEM READY</span></span
+					>
+					<button
+						id="logout-button"
+						class="quiet-button"
+						type="button"
+						hidden
+					>
+						LOG OUT
+					</button>
+				</div>
+			</header>
+
+			<section id="auth-screen" class="auth-layout">
+				<div class="auth-copy">
+					<p class="eyebrow">A TEXT-BASED ADVENTURE</p>
+					<h1>
+						Your legend<br />starts here<span class="cursor">_</span>
+					</h1>
+					<p class="muted">
+						Choose a character. Face the monsters. Try not to become a
+						cautionary tale.
+					</p>
+					<pre
+						class="mini-art"
+						aria-label="ASCII art of a dungeon doorway"
+					>
+     /\
+    /  \
+   /____\
+   | [] |
+   |    |
+  _|____|_</pre
+					>
+				</div>
+				<form id="auth-form" class="panel auth-panel">
+					<p class="eyebrow" id="auth-mode-label">PLAYER ACCESS</p>
+					<h2 id="auth-title">Log in</h2>
+					<label for="username">Username</label>
+					<input
+						id="username"
+						name="userName"
+						autocomplete="username"
+						minlength="3"
+						maxlength="32"
+						required
+					/>
+					<label for="password">Password</label>
+					<input
+						id="password"
+						name="password"
+						type="password"
+						autocomplete="current-password"
+						minlength="1"
+						maxlength="128"
+						required
+					/>
+					<p id="password-hint" class="field-hint" hidden>
+						Use at least 5 characters for a new account.
+					</p>
+					<button
+						class="primary-button"
+						type="submit"
+						id="auth-submit"
+					>
+						ENTER THE DUNGEON
+					</button>
+					<p id="auth-error" class="error-message" role="alert"></p>
+					<p class="switch-mode">
+						<span id="switch-prompt">New around here?</span>
+						<button
+							id="switch-auth"
+							class="text-button"
+							type="button"
+						>
+							Create an account
+						</button>
+					</p>
+				</form>
+			</section>
+
+			<section id="game-screen" hidden>
+				<div class="welcome-row">
+					<div>
+						<p class="eyebrow">ADVENTURER ONLINE</p>
+						<h1>Welcome, <span id="player-name"></span></h1>
+					</div>
+					<div class="sound-panel panel">
+						<span class="sound-icon" aria-hidden="true">♫</span>
+						<div class="sound-controls">
+							<label for="music-track">DUNGEON RADIO</label>
+							<select
+								id="music-track"
+								aria-label="Choose music track"
+							>
+								<option value="">No tracks added yet</option>
+							</select>
+						</div>
+						<button
+							id="music-toggle"
+							class="icon-button"
+							type="button"
+							aria-label="Play music"
+							title="Play music"
+						>
+							▶
+						</button>
+						<label class="volume-control" for="music-volume"
+							><span class="sr-only">Music volume</span
+							><input
+								id="music-volume"
+								type="range"
+								min="0"
+								max="1"
+								step="0.05"
+								value="0.35"
+						/></label>
+						<audio id="game-music" preload="none"></audio>
+					</div>
+				</div>
+
+				<div class="game-grid">
+					<aside class="panel roster-panel">
+						<div class="panel-heading">
+							<div>
+								<p class="eyebrow">YOUR PARTY</p>
+								<h2>Characters</h2>
+							</div>
+							<span class="count-badge" id="character-count">0</span>
+						</div>
+						<div id="character-list" class="character-list"></div>
+						<form id="new-character-form" class="inline-form">
+							<label for="new-character-name"
+								>Recruit a character</label
+							>
+							<fieldset class="class-choice">
+								<legend>Choose a class</legend>
+								<div id="character-class-options"></div>
+							</fieldset>
+							<fieldset class="mode-choice">
+								<legend>Game mode</legend>
+								<label><input type="radio" name="character-mode" value="hardcore" checked /> Hardcore — character is lost at 0 HP</label>
+								<label><input type="radio" name="character-mode" value="casual" /> Casual — character survives at 0 HP</label>
+							</fieldset>
+							<div class="input-row">
+								<input
+									id="new-character-name"
+									maxlength="50"
+									minlength="2"
+									placeholder="Character name"
+									required
+								/><button
+									class="add-button"
+									type="submit"
+									aria-label="Create character"
+								>
+									+
+								</button>
+							</div>
+						</form>
+					</aside>
+
+					<section class="panel terminal-panel">
+						<div class="terminal-titlebar">
+							<div class="window-dots"><i></i><i></i><i></i></div>
+							<span>QUEST TERMINAL // SESSION 01</span
+							><span class="terminal-live">LIVE</span>
+						</div>
+						<div class="terminal-content">
+							<pre class="terminal-banner">
+╔══════════════════════════════════════════╗
+║       D U N G E O N   T E R M I N A L    ║
+╚══════════════════════════════════════════╝</pre
+							>
+							<div id="battle-stage" class="battle-stage" aria-label="Fighters">
+								<div class="battle-combatant character-combatant">
+									<pre id="battle-character-art" class="battle-character-art"></pre>
+									<div class="battle-hp-caption"><span>CHARACTER</span><span id="character-battle-hp-value">0 / 0</span></div>
+									<div id="character-battle-hp-track" class="battle-hp-track" role="progressbar" aria-label="Character HP" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="character-battle-hp-fill"></span></div>
+								</div>
+								<div class="battle-combatant monster-combatant">
+									<pre id="battle-monster-art" class="battle-monster-art"></pre>
+									<div class="battle-hp-caption"><span>MONSTER</span><span id="monster-battle-hp-value">0 / 0</span></div>
+									<div id="monster-battle-hp-track" class="battle-hp-track" role="progressbar" aria-label="Monster HP" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="monster-battle-hp-fill"></span></div>
+								</div>
+							</div>
+							<div
+								class="battle-log"
+								id="battle-log"
+								aria-live="polite"
+							>
+								<p class="log-muted">&gt; Your story is waiting to be written.</p>
+								<p class="log-muted">&gt; Select a character and an enemy to begin.</p>
+							</div>
+							<div class="terminal-actions">
+								<label for="character-select">CHARACTER</label
+								><select id="character-select"></select>
+								<label for="dungeon-select">DUNGEON</label
+								><select id="dungeon-select"></select>
+								<button
+									id="fight-button"
+									class="danger-button"
+									type="button"
+								>
+									FIGHT NEXT WAVE <span>↵</span>
+								</button>
+				<label class="auto-option">
+					<input id="auto-fight" type="checkbox" /> AUTO-FIGHT
+				</label>
+				<label class="auto-option">
+					<input id="auto-camp" type="checkbox" /> AUTO-CAMP
+				</label>
+								<button
+									id="camp-button"
+									class="quiet-button"
+									type="button"
+								>
+									GO TO CAMP
+								</button>
+							</div>
+							<p
+								id="game-message"
+								class="game-message"
+								role="status"
+							></p>
+						</div>
+					</section>
+
+					<aside class="panel bestiary-panel">
+						<div class="panel-heading">
+							<div>
+								<p class="eyebrow">WORLD MAP</p>
+								<h2>Dungeons</h2>
+							</div>
+							<span class="count-badge" id="dungeon-count">0</span>
+						</div>
+						<div id="dungeon-list" class="dungeon-list"></div>
+						<div class="equipment-block">
+							<p class="eyebrow">EQUIPMENT</p>
+							<p id="equipped-sword" class="card-stats">Equipped: none</p>
+							<label for="sword-select">Equip a sword</label>
+							<div class="input-row">
+								<select id="sword-select"></select
+								><button
+									id="equip-button"
+									class="add-button"
+									type="button"
+									aria-label="Equip selected sword"
+								>
+									↗
+								</button>
+							</div>
+							<div id="armor-slots" class="armor-slots"></div>
+							<div id="gear-art" class="gear-art" aria-live="polite"></div>
+							<div class="auto-shop">
+								<p id="gold-balance" class="card-stats">Gold: 0</p>
+								<button id="buy-auto-fight" class="quiet-button" type="button"></button>
+								<button id="buy-auto-camp" class="quiet-button" type="button"></button>
+							</div>
+						</div>
+					</aside>
+				</div>
+				<dialog id="loot-dialog" class="loot-dialog">
+					<p class="eyebrow">MONSTER LOOT</p>
+					<h2>Choose one reward</h2>
+					<p>You can only take one of these three items.</p>
+					<label class="auto-loot-option"><input id="auto-loot" type="checkbox" /> Auto-pick a random item after 10 seconds</label>
+					<p id="loot-countdown" class="loot-countdown" role="status" aria-live="polite"></p>
+					<div id="loot-choices" class="loot-choices"></div>
+				</dialog>
+				<footer class="footer-note">
+					<span>ONE LIFE. QUESTIONABLE OUTFITS.</span
+					><span>MADE FOR THE BRAVE (AND THE DRAMATIC)</span>
+				</footer>
+			</section>
+		</main>
+	</body>
+</html>

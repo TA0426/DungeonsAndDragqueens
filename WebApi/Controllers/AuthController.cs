@@ -1,60 +1,137 @@
+using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using DungeonsAndDragqueens.WebApi.Services;
+using DungeonsAndDragqueens.WebApi.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Authorization;
 
-namespace OppgaveUkeEnModul3.WebApi.Controllers;
-
-
-// For fremtidig forbedring kunne jeg lagt inn adminprivilegier med 403 forbidden feil hvis en vanlig bruker prøver å DELETE.
-/* [Authorize(Roles = "Admin")]
-[HttpDelete("{id:guid}")]
-public async Task<IActionResult> Delete(Guid id)
-{
-    ...
-} */
-
-
+namespace DungeonsAndDragqueens.WebApi.Controllers;
 
 [ApiController]
 [Route("auth")]
-public class AuthController(IConfiguration configuration) : ControllerBase
+public class AuthController(
+    AuthService authService,
+    IConfiguration configuration) : ControllerBase
 {
-
-    [HttpPost("login")]
-    public IActionResult Login(LoginRequest request)
+    [HttpPost("register")]
+    public async Task<IActionResult> Register(RegisterRequest request)
     {
-        if (request.Username != "player" || request.Password != "password123")
+        var created = await authService.RegisterAsync(
+            request.UserName,
+            request.Password);
+
+        if (!created)
         {
-            return Unauthorized("Feil brukernavn eller passord.");
+            return Conflict(new
+            {
+                error = "That username is already in use."
+            });
         }
 
-        var claims = new[]
-        {
-            new Claim(ClaimTypes.Name, request.Username),
-            new Claim(ClaimTypes.NameIdentifier, "player-1")
-        };
+        var account = await authService.VerifyCredentialsAsync(
+            request.UserName,
+            request.Password);
 
+        return Ok(CreateLoginResponse(account!.Id, account.UserName));
+    }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(LoginRequest request)
+    {
+        var account = await authService.VerifyCredentialsAsync(
+            request.UserName,
+            request.Password);
+
+        if (account is null)
+            return Unauthorized(new { error = "Invalid username or password." });
+
+        return Ok(CreateLoginResponse(account.Id, account.UserName));
+    }
+
+    [Authorize]
+    [HttpGet("features")]
+    public async Task<IActionResult> GetFeatures()
+    {
+        if (!Guid.TryParse(User.GetUserId(), out var accountId))
+            return Unauthorized();
+
+        return Ok(await authService.GetFeaturesAsync(accountId));
+    }
+
+    [Authorize]
+    [HttpPost("features/{feature}/purchase")]
+    public async Task<IActionResult> PurchaseFeature(string feature)
+    {
+        if (!Guid.TryParse(User.GetUserId(), out var accountId))
+            return Unauthorized();
+
+        try
+        {
+            return Ok(await authService.PurchaseAutoFeatureAsync(accountId, feature));
+        }
+        catch (KeyNotFoundException exception)
+        {
+            return NotFound(new { error = exception.Message });
+        }
+        catch (ArgumentException exception)
+        {
+            return BadRequest(new { error = exception.Message });
+        }
+        catch (InvalidOperationException exception)
+        {
+            return Conflict(new { error = exception.Message });
+        }
+    }
+
+    private LoginResponse CreateLoginResponse(Guid userId, string userName)
+    {
         var key = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!));
-
         var credentials = new SigningCredentials(
             key,
             SecurityAlgorithms.HmacSha256);
+        var issuer = configuration["Jwt:Issuer"]!;
+        var audience = configuration["Jwt:Audience"]!;
 
         var token = new JwtSecurityToken(
-            claims: claims,
+            issuer: issuer,
+            audience: audience,
+            claims:
+            [
+                new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
+                new Claim(ClaimTypes.Name, userName)
+            ],
             expires: DateTime.UtcNow.AddHours(1),
             signingCredentials: credentials);
 
-        var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-
-        return Ok(new LoginResponse(tokenString));
+        return new LoginResponse(
+            new JwtSecurityTokenHandler().WriteToken(token),
+            userName);
     }
 }
 
-public record LoginRequest(string Username, string Password);
+public record RegisterRequest(
+    [Required]
+    [MinLength(3)]
+    [MaxLength(32)]
+    [RegularExpression("^[a-zA-Z0-9_-]+$")]
+    string UserName,
+    [Required]
+    [MinLength(5)]
+    [MaxLength(128)]
+    string Password);
 
-public record LoginResponse(string Token);
+public record LoginRequest(
+    [Required]
+    [MinLength(3)]
+    [MaxLength(32)]
+    string UserName,
+    [Required]
+    [MinLength(1)]
+    [MaxLength(128)]
+    string Password);
+
+public record LoginResponse(string Token, string UserName);

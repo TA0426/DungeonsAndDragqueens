@@ -1,11 +1,13 @@
-namespace OppgaveUkeEnModul3.WebApi.Controllers;
+namespace DungeonsAndDragqueens.WebApi.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
-using OppgaveUkeEnModul3.Core;
-using OppgaveUkeEnModul3.WebApi.Services;
+using Microsoft.AspNetCore.Authorization;
+using DungeonsAndDragqueens.Core;
+using DungeonsAndDragqueens.WebApi.Services;
 
 [ApiController]
 [Route("/[controller]")]
+[Authorize]
 public class StoreMonstersController(
     IStoreMonstersService service) : ControllerBase
 {

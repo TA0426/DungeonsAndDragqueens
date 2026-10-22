@@ -1,13 +1,15 @@
 using Microsoft.EntityFrameworkCore;
-using OppgaveUkeEnModul3.Core;
-using OppgaveUkeEnModul3.Core.Interfaces;
-using OppgaveUkeEnModul3.Core.Services;
-using OppgaveUkeEnModul3.WebApi.Services;
-using OppgaveUkeEnModul3.WebApi.DatabaseContext;
+using DungeonsAndDragqueens.Core;
+using DungeonsAndDragqueens.Core.Interfaces;
+using DungeonsAndDragqueens.Core.Services;
+using DungeonsAndDragqueens.WebApi.Services;
+using DungeonsAndDragqueens.WebApi.DatabaseContext;
+using DungeonsAndDragqueens.Core.Models;
 using Microsoft.OpenApi;
 using Scalar.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Identity;
 using System.Text;
 
 
@@ -46,6 +48,8 @@ builder.Services.AddScoped<FightService>();
 builder.Services.AddScoped<GameService>();
 builder.Services.AddScoped<CharacterService>();
 builder.Services.AddScoped<SwordService>();
+builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<IPasswordHasher<PlayerAccount>, PasswordHasher<PlayerAccount>>();
 
 builder.Services.AddDbContext<StoreMonstersContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -59,6 +63,13 @@ builder.Services.AddTransient<StoreMonsterBuilder>();
 
 var jwtKey = builder.Configuration["Jwt:Key"]
     ?? throw new InvalidOperationException("JWT key is missing.");
+if (Encoding.UTF8.GetByteCount(jwtKey) < 32)
+    throw new InvalidOperationException("JWT key must be at least 32 bytes long.");
+
+var jwtIssuer = builder.Configuration["Jwt:Issuer"]
+    ?? throw new InvalidOperationException("JWT issuer is missing.");
+var jwtAudience = builder.Configuration["Jwt:Audience"]
+    ?? throw new InvalidOperationException("JWT audience is missing.");
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -68,10 +79,10 @@ builder.Services
         {
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
-
-
-            ValidateIssuer = false,
-            ValidateAudience = false,
+            ValidateIssuer = true,
+            ValidIssuer = jwtIssuer,
+            ValidateAudience = true,
+            ValidAudience = jwtAudience,
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero
         };
@@ -88,10 +99,13 @@ using (var scope = app.Services.CreateScope())
         .GetRequiredService<StoreMonstersContext>();
 
     database.Database.Migrate();
+    await GameDataSeeder.SeedAsync(database);
 }
 
-
+app.UseDefaultFiles();
+app.UseStaticFiles();
 app.UseHttpsRedirection();
+app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 

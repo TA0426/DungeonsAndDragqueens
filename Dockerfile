@@ -9,8 +9,8 @@ COPY . .
 
 
 # Restore + publish
-RUN dotnet restore "OppgaveUkeEnModul3.csproj"
-RUN dotnet publish "OppgaveUkeEnModul3.csproj" -c Release -o /app/publish --no-restore
+RUN dotnet restore "DungeonsAndDragqueens.csproj"
+RUN dotnet publish "DungeonsAndDragqueens.csproj" -c Release -o /app/publish --no-restore
 
 # ---------- RUNTIME ----------
 FROM mcr.microsoft.com/dotnet/aspnet:10.0
@@ -18,4 +18,4 @@ WORKDIR /app
 
 COPY --from=build /app/publish .
 
-ENTRYPOINT ["dotnet", "OppgaveUkeEnModul3.dll"]
+ENTRYPOINT ["dotnet", "DungeonsAndDragqueens.dll"]

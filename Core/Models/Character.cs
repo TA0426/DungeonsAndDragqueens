@@ -1,6 +1,6 @@
-namespace OppgaveUkeEnModul3.Core.Models;
+namespace DungeonsAndDragqueens.Core.Models;
 
-namespace OppgaveUkeEnModul3.Core.Models;
+namespace DungeonsAndDragqueens.Core.Models;
 
 public class Character(guid characterGuid, string characterName, int characterHp, int characterDamage, int characterLevel)
 {

@@ -10,6 +10,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.12" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.12">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -21,10 +22,9 @@
   </ItemGroup>
 
 <ItemGroup>
-  <Compile Remove="ConsoleApp/**/*.cs" />
-  <Compile Remove="Calculator/**/*.cs" />
-  <Content Remove="ConsoleApp\**;Calculator.Tests\**" />
-  <Compile Remove="Calculator.Tests/**/*.cs" />
+  <Compile Remove="ConsoleApp/**/*.cs;DungeonsAndDragqueens.Tests/**/*.cs" />
+  <Content Remove="ConsoleApp\**;DungeonsAndDragqueens.Tests\**" />
+  <None Remove="ConsoleApp\**;DungeonsAndDragqueens.Tests\**" />
   <Compile Remove="Core/Interfaces/CalculateXP.cs" />
   <Compile Remove="Core/Models/Character.cs" />
   <Compile Remove="Core/Models/Monsters.cs" />

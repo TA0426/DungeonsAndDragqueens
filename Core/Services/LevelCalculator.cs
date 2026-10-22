@@ -1,4 +1,4 @@
-namespace OppgaveUkeEnModul3.Core.Services;
+namespace DungeonsAndDragqueens.Core.Services;
 
 public class LevelCalculator
 {

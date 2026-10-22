@@ -1,4 +1,4 @@
-namespace OppgaveUkeEnModul3.Core;
+namespace DungeonsAndDragqueens.Core;
 
 public class StoreMonster
 {

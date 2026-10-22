@@ -1,7 +1,8 @@
-namespace OppgaveUkeEnModul3.WebApi.DatabaseContext;
+namespace DungeonsAndDragqueens.WebApi.DatabaseContext;
 
-using OppgaveUkeEnModul3.Core;
-using OppgaveUkeEnModul3.Core.Interfaces;
+using DungeonsAndDragqueens.Core;
+using DungeonsAndDragqueens.Core.Interfaces;
+using DungeonsAndDragqueens.Core.Models;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -12,8 +13,23 @@ public class StoreMonstersContext(
     public DbSet<StoreMonster> StoreMonsters => Set<StoreMonster>();
     public DbSet<StoreCharacter> Characters => Set<StoreCharacter>();
     public DbSet<StoreSword> Swords => Set<StoreSword>();
+    public DbSet<StoreArmor> Armors => Set<StoreArmor>();
     public DbSet<CharacterMonsterProgress> CharacterMonsterProgress =>
     Set<CharacterMonsterProgress>();
+    public DbSet<PlayerAccount> PlayerAccounts => Set<PlayerAccount>();
+    public DbSet<CharacterInventoryItem> CharacterInventoryItems => Set<CharacterInventoryItem>();
+    public DbSet<CharacterLootOffer> CharacterLootOffers => Set<CharacterLootOffer>();
+    public DbSet<CharacterDungeonProgress> CharacterDungeonProgress => Set<CharacterDungeonProgress>();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<PlayerAccount>()
+            .HasIndex(account => account.NormalizedUserName)
+            .IsUnique();
+        modelBuilder.Entity<CharacterDungeonProgress>()
+            .HasIndex(progress => new { progress.CharacterId, progress.DungeonId })
+            .IsUnique();
+    }
 
     public StoreMonster Add(StoreMonster monster)
     {

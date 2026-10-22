@@ -1,6 +1,0 @@
-@OppgaveUkeEnModul3_HostAddress = http://localhost:5209
-
-GET {{OppgaveUkeEnModul3_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

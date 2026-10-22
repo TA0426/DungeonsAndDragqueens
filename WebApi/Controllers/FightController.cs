@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OppgaveUkeEnModul3.Core;
-using OppgaveUkeEnModul3.WebApi.Extensions;
-using OppgaveUkeEnModul3.WebApi.Services;
+using DungeonsAndDragqueens.Core;
+using DungeonsAndDragqueens.WebApi.Extensions;
+using DungeonsAndDragqueens.WebApi.Services;
 
-namespace OppgaveUkeEnModul3.WebApi.Controllers;
+namespace DungeonsAndDragqueens.WebApi.Controllers;
 
 [ApiController]
 [Route("/[controller]")]
@@ -12,7 +12,6 @@ namespace OppgaveUkeEnModul3.WebApi.Controllers;
 public class FightController(
     GameService gameService) : ControllerBase
 {
-    [HttpPost]
     [HttpPost]
     public async Task<IActionResult> StartFight(StartFightDTO dto)
     {
@@ -30,11 +29,43 @@ public class FightController(
         if (userId is null)
             return Unauthorized();
 
-        var result = await gameService.StartFightAsync(
-            dto.CharacterId.Value,
-            dto.MonsterId.Value,
-            userId);
+        try
+        {
+            var result = await gameService.StartFightAsync(
+                dto.CharacterId.Value,
+                dto.MonsterId.Value,
+                userId);
 
-        return Ok(result);
+            return Ok(result);
+        }
+        catch (KeyNotFoundException exception)
+        {
+            return NotFound(new { error = exception.Message });
+        }
+        catch (InvalidOperationException exception)
+        {
+            return Conflict(new { error = exception.Message });
+        }
+    }
+
+    [HttpPost("dungeon")]
+    public async Task<IActionResult> StartDungeonFight(StartDungeonFightDTO dto)
+    {
+        if (dto.CharacterId is null || dto.CharacterId == Guid.Empty || string.IsNullOrWhiteSpace(dto.DungeonId))
+            return BadRequest("CharacterId and DungeonId are required.");
+        var userId = User.GetUserId();
+        if (userId is null) return Unauthorized();
+        try { return Ok(await gameService.StartDungeonFightAsync(dto.CharacterId.Value, dto.DungeonId, userId)); }
+        catch (KeyNotFoundException exception) { return NotFound(new { error = exception.Message }); }
+        catch (InvalidOperationException exception) { return Conflict(new { error = exception.Message }); }
+    }
+
+    [HttpPost("{offerId:guid}/loot")]
+    public async Task<IActionResult> ClaimLoot(Guid offerId, ClaimLootDTO dto)
+    {
+        var userId = User.GetUserId();
+        if (userId is null) return Unauthorized();
+        try { return Ok(await gameService.ClaimLootAsync(offerId, dto.ChoiceIndex, userId)); }
+        catch (InvalidOperationException exception) { return Conflict(new { error = exception.Message }); }
     }
 }

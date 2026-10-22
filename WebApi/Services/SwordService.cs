@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using OppgaveUkeEnModul3.Core;
-using OppgaveUkeEnModul3.WebApi.DatabaseContext;
+using DungeonsAndDragqueens.Core;
+using DungeonsAndDragqueens.WebApi.DatabaseContext;
 
-namespace OppgaveUkeEnModul3.WebApi.Services;
+namespace DungeonsAndDragqueens.WebApi.Services;
 
 public class SwordService(StoreMonstersContext database)
 {

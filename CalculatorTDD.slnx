@@ -1,5 +1,0 @@
-<Solution>
-  <Project Path="ConsoleApp/ConsoleApp.csproj" />
-  <Project Path="OppgaveUkeEnModul3.csproj" />
-  <Project Path="Calculator.Tests/Calculator.Tests.csproj" />
-</Solution>
