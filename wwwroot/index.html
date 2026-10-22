@@ -19,7 +19,9 @@
 					href="/"
 					aria-label="Dungeons and Dragqueens home"
 				>
-					<pre class="brand-mark" aria-hidden="true">  ^&#10; (o.o)&#10; /|#|\&#10;&lt;|||&gt;&#10; / \</pre>
+					<pre class="brand-mark" aria-hidden="true">
+  ^&#10; (o.o)&#10; /|#|\&#10;&lt;|||&gt;&#10; / \</pre
+					>
 					<span>DUNGEONS <i>&amp;</i> DRAGQUEENS</span>
 				</a>
 				<div class="topbar-right">
@@ -166,8 +168,23 @@
 							</fieldset>
 							<fieldset class="mode-choice">
 								<legend>Game mode</legend>
-								<label><input type="radio" name="character-mode" value="hardcore" checked /> Hardcore — character is lost at 0 HP</label>
-								<label><input type="radio" name="character-mode" value="casual" /> Casual — character survives at 0 HP</label>
+								<label
+									><input
+										type="radio"
+										name="character-mode"
+										value="hardcore"
+										checked
+									/>
+									Hardcore — character is lost at 0 HP</label
+								>
+								<label
+									><input
+										type="radio"
+										name="character-mode"
+										value="casual"
+									/>
+									Casual — character survives at 0 HP</label
+								>
 							</fieldset>
 							<div class="input-row">
 								<input
@@ -199,16 +216,52 @@
 ║       D U N G E O N   T E R M I N A L    ║
 ╚══════════════════════════════════════════╝</pre
 							>
-							<div id="battle-stage" class="battle-stage" aria-label="Fighters">
+							<div
+								id="battle-stage"
+								class="battle-stage"
+								aria-label="Fighters"
+							>
 								<div class="battle-combatant character-combatant">
-									<pre id="battle-character-art" class="battle-character-art"></pre>
-									<div class="battle-hp-caption"><span>CHARACTER</span><span id="character-battle-hp-value">0 / 0</span></div>
-									<div id="character-battle-hp-track" class="battle-hp-track" role="progressbar" aria-label="Character HP" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="character-battle-hp-fill"></span></div>
+									<pre
+										id="battle-character-art"
+										class="battle-character-art"
+									></pre>
+									<div class="battle-hp-caption">
+										<span>CHARACTER</span
+										><span id="character-battle-hp-value">0 / 0</span>
+									</div>
+									<div
+										id="character-battle-hp-track"
+										class="battle-hp-track"
+										role="progressbar"
+										aria-label="Character HP"
+										aria-valuemin="0"
+										aria-valuemax="100"
+										aria-valuenow="0"
+									>
+										<span id="character-battle-hp-fill"></span>
+									</div>
 								</div>
 								<div class="battle-combatant monster-combatant">
-									<pre id="battle-monster-art" class="battle-monster-art"></pre>
-									<div class="battle-hp-caption"><span>MONSTER</span><span id="monster-battle-hp-value">0 / 0</span></div>
-									<div id="monster-battle-hp-track" class="battle-hp-track" role="progressbar" aria-label="Monster HP" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="monster-battle-hp-fill"></span></div>
+									<pre
+										id="battle-monster-art"
+										class="battle-monster-art"
+									></pre>
+									<div class="battle-hp-caption">
+										<span>MONSTER</span
+										><span id="monster-battle-hp-value">0 / 0</span>
+									</div>
+									<div
+										id="monster-battle-hp-track"
+										class="battle-hp-track"
+										role="progressbar"
+										aria-label="Monster HP"
+										aria-valuemin="0"
+										aria-valuemax="100"
+										aria-valuenow="0"
+									>
+										<span id="monster-battle-hp-fill"></span>
+									</div>
 								</div>
 							</div>
 							<div
@@ -216,8 +269,12 @@
 								id="battle-log"
 								aria-live="polite"
 							>
-								<p class="log-muted">&gt; Your story is waiting to be written.</p>
-								<p class="log-muted">&gt; Select a character and an enemy to begin.</p>
+								<p class="log-muted">
+									&gt; Your story is waiting to be written.
+								</p>
+								<p class="log-muted">
+									&gt; Select a character and an enemy to begin.
+								</p>
 							</div>
 							<div class="terminal-actions">
 								<label for="character-select">CHARACTER</label
@@ -231,12 +288,12 @@
 								>
 									FIGHT NEXT WAVE <span>↵</span>
 								</button>
-				<label class="auto-option">
-					<input id="auto-fight" type="checkbox" /> AUTO-FIGHT
-				</label>
-				<label class="auto-option">
-					<input id="auto-camp" type="checkbox" /> AUTO-CAMP
-				</label>
+								<label class="auto-option">
+									<input id="auto-fight" type="checkbox" /> AUTO-FIGHT
+								</label>
+								<label class="auto-option">
+									<input id="auto-camp" type="checkbox" /> AUTO-CAMP
+								</label>
 								<button
 									id="camp-button"
 									class="quiet-button"
@@ -264,7 +321,9 @@
 						<div id="dungeon-list" class="dungeon-list"></div>
 						<div class="equipment-block">
 							<p class="eyebrow">EQUIPMENT</p>
-							<p id="equipped-sword" class="card-stats">Equipped: none</p>
+							<p id="equipped-sword" class="card-stats">
+								Equipped: none
+							</p>
 							<label for="sword-select">Equip a sword</label>
 							<div class="input-row">
 								<select id="sword-select"></select
@@ -278,11 +337,23 @@
 								</button>
 							</div>
 							<div id="armor-slots" class="armor-slots"></div>
-							<div id="gear-art" class="gear-art" aria-live="polite"></div>
+							<div
+								id="gear-art"
+								class="gear-art"
+								aria-live="polite"
+							></div>
 							<div class="auto-shop">
 								<p id="gold-balance" class="card-stats">Gold: 0</p>
-								<button id="buy-auto-fight" class="quiet-button" type="button"></button>
-								<button id="buy-auto-camp" class="quiet-button" type="button"></button>
+								<button
+									id="buy-auto-fight"
+									class="quiet-button"
+									type="button"
+								></button>
+								<button
+									id="buy-auto-camp"
+									class="quiet-button"
+									type="button"
+								></button>
 							</div>
 						</div>
 					</aside>
@@ -291,8 +362,16 @@
 					<p class="eyebrow">MONSTER LOOT</p>
 					<h2>Choose one reward</h2>
 					<p>You can only take one of these three items.</p>
-					<label class="auto-loot-option"><input id="auto-loot" type="checkbox" /> Auto-pick a random item after 10 seconds</label>
-					<p id="loot-countdown" class="loot-countdown" role="status" aria-live="polite"></p>
+					<label class="auto-loot-option"
+						><input id="auto-loot" type="checkbox" /> Auto-pick a
+						random item after 10 seconds</label
+					>
+					<p
+						id="loot-countdown"
+						class="loot-countdown"
+						role="status"
+						aria-live="polite"
+					></p>
 					<div id="loot-choices" class="loot-choices"></div>
 				</dialog>
 				<footer class="footer-note">

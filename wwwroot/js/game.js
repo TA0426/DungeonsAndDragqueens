@@ -15,56 +15,90 @@ const api = {
 };
 
 const characterArt = {
-	Warrior: "  \\  |  /\n---\\*/---\n   /#\\\n  (o.o)\n /|###|\\\n   / \\",
-	Wizard: "    /\\\n   /  \\\n  /_**_\\\n    \\o/\n   (o.o)\n   /|\\\n   / \\",
+	Warrior:
+		"  \\  |  /\n---\\*/---\n   /#\\\n  (o.o)\n /|###|\\\n   / \\",
+	Wizard:
+		"    /\\\n   /  \\\n  /_**_\\\n    \\o/\n   (o.o)\n   /|\\\n   / \\",
 	Warlock: "  \\  ^  /\n   \\ | /\n  (o.o)\n  /|###|\\\n   /| |\\",
-	Ranger: "   .---.\n  / o o \\\n /   ^   \\\n(  (___)  )\n   /|>---\n  / | \\",
-	Assassin: "  /\\   /\\\n /  \\_/  \\\n |  -.-  |\n  \\ _=_ /\n   /| |\\\n  / | | \\",
+	Ranger:
+		"   .---.\n  / o o \\\n /   ^   \\\n(  (___)  )\n   /|>---\n  / | \\",
+	Assassin:
+		"  /\\   /\\\n /  \\_/  \\\n |  -.-  |\n  \\ _=_ /\n   /| |\\\n  / | | \\",
 };
 
 const monsterArt = {
-	slime: "   .----.\n  / .--. \\\n | ( oo ) |\n  \\ '--' /\n   '----'",
-	goblin: "  .-^^^^-.\n /  o  o  \\\n|   > <   |\n \\  ===  /\n  /|###|\\\n   /   \\",
-	wraith: "      .-.\n    _(   )_\n   /  o o  \\\n  |    ^    |\n   \\  ___  /\n    '-----'",
-	ghost: "   .----.\n  / .--. \\\n | ( o  o ) |\n |  \\__/  |\n  \\_    _/\n    /__\\",
-	ghoul: "   .-----.\n  /  o o  \\\n |  /___\\  |\n |  \\___/  |\n  \\_|||_/\n   /   \\",
-	undead: "   .----.\n  / x  x \\\n |   .-.   |\n  \\  === /\n  /|###|\\\n   /   \\",
-	skeleton: "   .----.\n  / o  o \\\n |   .-.   |\n  \\  =  /\n  _/|###|\\_\n    /   \\",
-	zombie: "  .-~~~-.\n /  x  o \\\n|   .---.  |\n \\  ~~~  /\n  /|###|\\\n  /  _  \\",
-	vampire: "  .-^^^-.\n /  o o  \\\n|   \\_/   |\n \\  /V\\  /\n  \\|###|/\n   /   \\",
+	slime:
+		"   .----.\n  / .--. \\\n | ( oo ) |\n  \\ '--' /\n   '----'",
+	goblin:
+		"  .-^^^^-.\n /  o  o  \\\n|   > <   |\n \\  ===  /\n  /|###|\\\n   /   \\",
+	wraith:
+		"      .-.\n    _(   )_\n   /  o o  \\\n  |    ^    |\n   \\  ___  /\n    '-----'",
+	ghost:
+		"   .----.\n  / .--. \\\n | ( o  o ) |\n |  \\__/  |\n  \\_    _/\n    /__\\",
+	ghoul:
+		"   .-----.\n  /  o o  \\\n |  /___\\  |\n |  \\___/  |\n  \\_|||_/\n   /   \\",
+	undead:
+		"   .----.\n  / x  x \\\n |   .-.   |\n  \\  === /\n  /|###|\\\n   /   \\",
+	skeleton:
+		"   .----.\n  / o  o \\\n |   .-.   |\n  \\  =  /\n  _/|###|\\_\n    /   \\",
+	zombie:
+		"  .-~~~-.\n /  x  o \\\n|   .---.  |\n \\  ~~~  /\n  /|###|\\\n  /  _  \\",
+	vampire:
+		"  .-^^^-.\n /  o o  \\\n|   \\_/   |\n \\  /V\\  /\n  \\|###|/\n   /   \\",
 	lich: "   .-.-.\n  /  x x \\\n |  .---.  |\n  \\  === /\n  /|#####|\\\n    /   \\",
 	orc: "  .-^^^^-.\n /  o  o  \\\n|  >====<  |\n \\  ===  /\n /|#####|\\\n   /   \\",
 	ogre: "  .------.\n /  o  o  \\\n|   (___)  |\n \\  ===  /\n  /|####|\\\n  /      \\",
-	troll: "  .------.\n /  @  @  \\\n|   .---.  |\n \\  ===  /\n  /|####|\\\n / |    | \\",
-	golem: "   .----.\n  / [] [] \\\n |  |####|  |\n |  | ## |  |\n  \\_|##|_/\n    /  \\",
-	wizard: "     /\\\n    /++\\\n   /____\\\n  ( o  o )\n   \\_==_/\n   /|###|\\\n    /   \\",
+	troll:
+		"  .------.\n /  @  @  \\\n|   .---.  |\n \\  ===  /\n  /|####|\\\n / |    | \\",
+	golem:
+		"   .----.\n  / [] [] \\\n |  |####|  |\n |  | ## |  |\n  \\_|##|_/\n    /  \\",
+	wizard:
+		"     /\\\n    /++\\\n   /____\\\n  ( o  o )\n   \\_==_/\n   /|###|\\\n    /   \\",
 	mage: "     /\\\n    /**\\\n   /____\\\n  ( o  o )\n   \\_==_/\n    /|\\",
 	warlock: "  \\  ^  /\n   \\ | /\n  ( o.o )\n  /|###|\\\n   / | \\",
-	witch: "   .-^^-.\n  /  o o \\\n |   \\_/  |\n  \\  === /\n  /|###|\\\n   /   \\",
-	dragon: "      /\\_/\\\n  ___/  o o  \\___\n /   \\  ^  /    \\\n|  ___/====\\___  |\n \\_/  /####\\  \\_/\n      /_/  \\_\\",
-	demon: "  \\  ^  /\n   \\ | /\n  / .-. \\\n | ( x x ) |\n  \\  ^  /\n  /|###|\\",
+	witch:
+		"   .-^^-.\n  /  o o \\\n |   \\_/  |\n  \\  === /\n  /|###|\\\n   /   \\",
+	dragon:
+		"      /\\_/\\\n  ___/  o o  \\___\n /   \\  ^  /    \\\n|  ___/====\\___  |\n \\_/  /####\\  \\_/\n      /_/  \\_\\",
+	demon:
+		"  \\  ^  /\n   \\ | /\n  / .-. \\\n | ( x x ) |\n  \\  ^  /\n  /|###|\\",
 	imp: "  \\ ^ ^ /\n   \\o.o/\n   (  ^ )\n    /|\\\n   _/ \\_",
-	"fire elemental": "    .  *  .\n   \\  ^  /\n  (  o.o  )\n  /  ###  \\\n    /   \\",
-	"ice elemental": "   * . . *\n  /  o o  \\\n |  .---.  |\n  \\  === /\n   /|###|\\\n    /   \\",
-	mummy: "   .----.\n  / /////\\\n |  o  o  |\n | /====\\ |\n  \\_||||_/\n   /   \\",
-	cyclops: "  .------.\n /        \\\n|    (o)   |\n \\   ___  /\n  /|#####|\\\n    /   \\",
-	minotaur: " \\  ^  ^  /\n  \\ |  | /\n  / o  o \\\n |   (__)  |\n  \\ ##### /\n   /|   |\\",
-	hydra: " /\\  /\\  /\\\n( o )( o )( o )\n \\__/\\__/\\__/\n    |####|\n    /    \\",
-	kraken: "  .-~~~~-.\n /  o  o  \\\n|   (___)  |\n \\_/|###|\\_/\n  ~ /| |\\ ~\n   / / \\ \\",
-	gargoyle: "  /\\  /\\\n /  \\__/  \\\n|  o  o  |\n \\  === /\n /|#####|\\\n/ /     \\ \\",
-	phoenix: "   \\ | /\n  -- * --\n  ( o.o )\n /|#####|\\\n/  /   \\  \\\n  /     \\",
-	elemental: "    . * .\n   / o o \\\n  (   ^   )\n   \\ ### /\n    /   \\",
-	spider: " /\\  |  /\\\n(  o\\ | /o  )\n \\  (o.o)  /\n /\\ /###\\ /\\\n    / | \\",
+	"fire elemental":
+		"    .  *  .\n   \\  ^  /\n  (  o.o  )\n  /  ###  \\\n    /   \\",
+	"ice elemental":
+		"   * . . *\n  /  o o  \\\n |  .---.  |\n  \\  === /\n   /|###|\\\n    /   \\",
+	mummy:
+		"   .----.\n  / /////\\\n |  o  o  |\n | /====\\ |\n  \\_||||_/\n   /   \\",
+	cyclops:
+		"  .------.\n /        \\\n|    (o)   |\n \\   ___  /\n  /|#####|\\\n    /   \\",
+	minotaur:
+		" \\  ^  ^  /\n  \\ |  | /\n  / o  o \\\n |   (__)  |\n  \\ ##### /\n   /|   |\\",
+	hydra:
+		" /\\  /\\  /\\\n( o )( o )( o )\n \\__/\\__/\\__/\n    |####|\n    /    \\",
+	kraken:
+		"  .-~~~~-.\n /  o  o  \\\n|   (___)  |\n \\_/|###|\\_/\n  ~ /| |\\ ~\n   / / \\ \\",
+	gargoyle:
+		"  /\\  /\\\n /  \\__/  \\\n|  o  o  |\n \\  === /\n /|#####|\\\n/ /     \\ \\",
+	phoenix:
+		"   \\ | /\n  -- * --\n  ( o.o )\n /|#####|\\\n/  /   \\  \\\n  /     \\",
+	elemental:
+		"    . * .\n   / o o \\\n  (   ^   )\n   \\ ### /\n    /   \\",
+	spider:
+		" /\\  |  /\\\n(  o\\ | /o  )\n \\  (o.o)  /\n /\\ /###\\ /\\\n    / | \\",
 	werewolf: " /\\_/\\\n(  o o  )\n \\  ^  /\n /|###|\\\n/ |   | \\",
 	wolf: " /\\_/\\\n(  o o  )\n \\  ^  /\n  /| |\\\n / | | \\",
 	bat: " /\\   /\\\n(  \\_/  )\n \\ (o.o) /\n  \\ ### /\n   /   \\",
 	serpent: "   /^\\\n  /o o\\\n /  ^  \\\n(  /###\n \\_/  \\",
 	snake: "   /^\\\n  /o o\\\n (  ^  )___\n  \\###  __)\n   \\___/",
-	knight: "   .----.\n  / [] [] \\\n |   .--.   |\n  \\  ===  /\n  /|#####|\\\n   /  |  \\",
-	mimic: "   .-----.\n  /  o o  \\\n |  /^^^^\\  |\n |  \\____/  |\n  \\_||||_/\n   /_____\\",
+	knight:
+		"   .----.\n  / [] [] \\\n |   .--.   |\n  \\  ===  /\n  /|#####|\\\n   /  |  \\",
+	mimic:
+		"   .-----.\n  /  o o  \\\n |  /^^^^\\  |\n |  \\____/  |\n  \\_||||_/\n   /_____\\",
 	harpy: "  \\  ^  /\n   \\o.o/\n  /|###|\\\n / /| |\\ \\\n   /   \\",
-	beast: "  .-^^^^-.\n /  o  o  \\\n|   ( ^ )  |\n \\  ===  /\n  /|###|\\\n   /   \\",
-	monster: "  .-^^^^-.\n /  o  o  \\\n|   (___)  |\n \\  ===  /\n  /|###|\\\n   /   \\",
+	beast:
+		"  .-^^^^-.\n /  o  o  \\\n|   ( ^ )  |\n \\  ===  /\n  /|###|\\\n   /   \\",
+	monster:
+		"  .-^^^^-.\n /  o  o  \\\n|   (___)  |\n \\  ===  /\n  /|###|\\\n   /   \\",
 };
 
 function getMonsterArt(monster) {
@@ -77,7 +111,11 @@ function getMonsterArt(monster) {
 	const namedType = Object.keys(monsterArt)
 		.sort((first, second) => second.length - first.length)
 		.find((candidate) => new RegExp(`\\b${candidate}\\b`).test(name));
-	return monsterArt[namedType] || monsterArt[monsterType] || monsterArt.monster;
+	return (
+		monsterArt[namedType] ||
+		monsterArt[monsterType] ||
+		monsterArt.monster
+	);
 }
 
 const byId = (id) => document.getElementById(id);
@@ -117,7 +155,12 @@ function showMessage(message, error = false) {
 	output.style.color = error ? "var(--red)" : "var(--orange)";
 }
 
-function updateBattleHp(characterHp, characterMaxHp, monsterHp, monsterMaxHp) {
+function updateBattleHp(
+	characterHp,
+	characterMaxHp,
+	monsterHp,
+	monsterMaxHp,
+) {
 	for (const [id, hp, maxHp] of [
 		["character", characterHp, characterMaxHp],
 		["monster", monsterHp, monsterMaxHp],
@@ -125,7 +168,8 @@ function updateBattleHp(characterHp, characterMaxHp, monsterHp, monsterMaxHp) {
 		const maximum = Math.max(1, maxHp);
 		const current = Math.max(0, Math.min(hp, maximum));
 		const percent = (current / maximum) * 100;
-		byId(`${id}-battle-hp-value`).textContent = `${current} / ${maximum} HP`;
+		byId(`${id}-battle-hp-value`).textContent =
+			`${current} / ${maximum} HP`;
 		byId(`${id}-battle-hp-fill`).style.width = `${percent}%`;
 		const track = byId(`${id}-battle-hp-track`);
 		track.setAttribute("aria-valuemax", maximum);
@@ -284,7 +328,8 @@ function renderCharacters() {
 		title.className = "card-title";
 		const portrait = document.createElement("pre");
 		portrait.className = "character-portrait";
-		portrait.textContent = characterArt[character.characterClass] || characterArt.Warrior;
+		portrait.textContent =
+			characterArt[character.characterClass] || characterArt.Warrior;
 		portrait.setAttribute("aria-hidden", "true");
 		const name = document.createElement("span");
 		name.textContent = character.name;
@@ -327,8 +372,10 @@ async function selectCharacter(id) {
 			request(`/StoreCharacters/${id}/inventory`),
 			request(`/Dungeons?characterId=${id}`),
 		]);
+	} catch (exception) {
+		api.inventory = [];
+		showMessage(exception.message, true);
 	}
-	catch (exception) { api.inventory = []; showMessage(exception.message, true); }
 	renderCharacters();
 	renderDungeons();
 	renderSwords();
@@ -338,34 +385,73 @@ async function selectCharacter(id) {
 function renderDungeons() {
 	const list = byId("dungeon-list");
 	const select = byId("dungeon-select");
-	list.replaceChildren(); select.replaceChildren();
+	list.replaceChildren();
+	select.replaceChildren();
 	byId("dungeon-count").textContent = api.dungeons.length;
-	if (!api.dungeons.some(item => item.id === api.selectedDungeonId && !item.isCompleted))
-		api.selectedDungeonId = api.dungeons.find(item => !item.isCompleted)?.id || api.dungeons[0]?.id || null;
+	if (
+		!api.dungeons.some(
+			(item) =>
+				item.id === api.selectedDungeonId && !item.isCompleted,
+		)
+	)
+		api.selectedDungeonId =
+			api.dungeons.find((item) => !item.isCompleted)?.id ||
+			api.dungeons[0]?.id ||
+			null;
 	for (const dungeon of api.dungeons) {
-		addOption(select, dungeon.id, `${dungeon.name}${dungeon.isCompleted ? " · CLEARED" : ` · WAVE ${dungeon.currentWave}`}`);
+		addOption(
+			select,
+			dungeon.id,
+			`${dungeon.name}${dungeon.isCompleted ? " · CLEARED" : ` · WAVE ${dungeon.currentWave}`}`,
+		);
 		const card = document.createElement("article");
 		card.className = `dungeon-card${dungeon.id === api.selectedDungeonId ? " selected" : ""}${dungeon.isCompleted ? " cleared" : ""}`;
 		if (dungeon.isCompleted) select.lastElementChild.disabled = true;
 		card.tabIndex = 0;
-		const heading = document.createElement("div"); heading.className = "card-title";
-		const name = document.createElement("span"); name.textContent = dungeon.name;
-		const difficulty = document.createElement("small"); difficulty.textContent = dungeon.difficulty.toUpperCase();
-		if (dungeon.isCompleted) { const victory = document.createElement("span"); victory.className = "dungeon-victory"; victory.textContent = "🏆 DEFEATED"; heading.append(name, victory, difficulty); }
-		else heading.append(name, difficulty);
-		const art = document.createElement("pre"); art.className = "dungeon-art"; art.textContent = dungeon.asciiArt;
-		const world = document.createElement("p"); world.className = "dungeon-world"; world.textContent = dungeon.world;
-		const description = document.createElement("p"); description.className = "dungeon-description"; description.textContent = dungeon.description;
-		const stats = document.createElement("p"); stats.className = "card-stats";
+		const heading = document.createElement("div");
+		heading.className = "card-title";
+		const name = document.createElement("span");
+		name.textContent = dungeon.name;
+		const difficulty = document.createElement("small");
+		difficulty.textContent = dungeon.difficulty.toUpperCase();
+		if (dungeon.isCompleted) {
+			const victory = document.createElement("span");
+			victory.className = "dungeon-victory";
+			victory.textContent = "🏆 DEFEATED";
+			heading.append(name, victory, difficulty);
+		} else heading.append(name, difficulty);
+		const art = document.createElement("pre");
+		art.className = "dungeon-art";
+		art.textContent = dungeon.asciiArt;
+		const world = document.createElement("p");
+		world.className = "dungeon-world";
+		world.textContent = dungeon.world;
+		const description = document.createElement("p");
+		description.className = "dungeon-description";
+		description.textContent = dungeon.description;
+		const stats = document.createElement("p");
+		stats.className = "card-stats";
 		stats.textContent = `Recommended: LV ${dungeon.recommendedLevel} · Sword ${dungeon.recommendedSwordDamage}+ · ${dungeon.isCompleted ? "CLEARED" : dungeon.isBossWave ? "BOSS WAVE 51" : `WAVE ${dungeon.currentWave}/50`}`;
 		card.append(art, heading, world, description, stats);
-		const choose = () => { if (dungeon.isCompleted) return; api.selectedDungeonId = dungeon.id; sessionStorage.setItem("dd-dungeon", dungeon.id); select.value = dungeon.id; renderDungeons(); };
+		const choose = () => {
+			if (dungeon.isCompleted) return;
+			api.selectedDungeonId = dungeon.id;
+			sessionStorage.setItem("dd-dungeon", dungeon.id);
+			select.value = dungeon.id;
+			renderDungeons();
+		};
 		card.addEventListener("click", choose);
-		card.addEventListener("keydown", event => { if (event.key === "Enter" || event.key === " ") choose(); });
+		card.addEventListener("keydown", (event) => {
+			if (event.key === "Enter" || event.key === " ") choose();
+		});
 		list.append(card);
 	}
 	select.value = api.selectedDungeonId || "";
-	select.onchange = () => { api.selectedDungeonId = select.value; sessionStorage.setItem("dd-dungeon", select.value); renderDungeons(); };
+	select.onchange = () => {
+		api.selectedDungeonId = select.value;
+		sessionStorage.setItem("dd-dungeon", select.value);
+		renderDungeons();
+	};
 }
 
 function renderSwords() {
@@ -375,8 +461,14 @@ function renderSwords() {
 	const character = api.characters.find(
 		(item) => item.id === api.selectedCharacterId,
 	);
-	const swords = api.inventory.filter(item => item.type === "sword");
-	const equippedSword = swords.find(item => item.swordId === character?.swordId && item.level === character?.swordLevel);
+	const swords = api.inventory.filter(
+		(item) => item.type === "sword",
+	);
+	const equippedSword = swords.find(
+		(item) =>
+			item.swordId === character?.swordId &&
+			item.level === character?.swordLevel,
+	);
 	equipped.textContent = equippedSword
 		? `Equipped: ${equippedSword.name} · LV ${equippedSword.level} · +${equippedSword.damage} DMG`
 		: "Equipped: none";
@@ -399,49 +491,109 @@ function renderSwords() {
 }
 
 function renderGearArt() {
-	const character = api.characters.find(item => item.id === api.selectedCharacterId);
+	const character = api.characters.find(
+		(item) => item.id === api.selectedCharacterId,
+	);
 	const root = byId("gear-art");
 	root.replaceChildren();
-	const sword = api.inventory.find(item => item.id === byId("sword-select").value) || api.inventory.find(item => item.type === "sword" && item.swordId === character?.swordId && item.level === character?.swordLevel);
-	const selectedArmorIds = ["helmet", "chest", "gloves", "legs", "boots"].map(slot => byId("armor-slots").querySelector(`[data-slot="${slot}"]`)?.value);
-	const items = [sword, ...api.inventory.filter(item => item.type === "armor" && selectedArmorIds.includes(item.id))].filter(Boolean);
+	const sword =
+		api.inventory.find(
+			(item) => item.id === byId("sword-select").value,
+		) ||
+		api.inventory.find(
+			(item) =>
+				item.type === "sword" &&
+				item.swordId === character?.swordId &&
+				item.level === character?.swordLevel,
+		);
+	const selectedArmorIds = [
+		"helmet",
+		"chest",
+		"gloves",
+		"legs",
+		"boots",
+	].map(
+		(slot) =>
+			byId("armor-slots").querySelector(`[data-slot="${slot}"]`)
+				?.value,
+	);
+	const items = [
+		sword,
+		...api.inventory.filter(
+			(item) =>
+				item.type === "armor" && selectedArmorIds.includes(item.id),
+		),
+	].filter(Boolean);
 	for (const item of items) {
-		const piece = document.createElement("div"); piece.className = "gear-piece";
-		const art = document.createElement("pre"); art.textContent = item.asciiArt || "";
+		const piece = document.createElement("div");
+		piece.className = "gear-piece";
+		const art = document.createElement("pre");
+		art.textContent = item.asciiArt || "";
 		const label = document.createElement("span");
-		label.textContent = item.type === "armor" ? `${item.name} LV ${item.level} · DEF ${item.defense}${item.swordDamageBonus ? ` · +${item.swordDamageBonus} sword` : ""}` : `${item.name} LV ${item.level} · +${item.damage} DMG`;
-		piece.append(art, label); root.append(piece);
+		label.textContent =
+			item.type === "armor"
+				? `${item.name} LV ${item.level} · DEF ${item.defense}${item.swordDamageBonus ? ` · +${item.swordDamageBonus} sword` : ""}`
+				: `${item.name} LV ${item.level} · +${item.damage} DMG`;
+		piece.append(art, label);
+		root.append(piece);
 	}
 }
 
 function renderArmors() {
-	const character = api.characters.find(item => item.id === api.selectedCharacterId);
+	const character = api.characters.find(
+		(item) => item.id === api.selectedCharacterId,
+	);
 	const root = byId("armor-slots");
 	root.replaceChildren();
 	for (const slot of ["helmet", "chest", "gloves", "legs", "boots"]) {
 		const label = document.createElement("label");
 		label.textContent = slot[0].toUpperCase() + slot.slice(1);
-		const row = document.createElement("div"); row.className = "input-row";
+		const row = document.createElement("div");
+		row.className = "input-row";
 		const select = document.createElement("select");
 		select.dataset.slot = slot;
-		const pieces = api.inventory.filter(item => item.type === "armor" && item.slot.toLowerCase() === slot);
-		for (const piece of pieces) addOption(select, piece.id, `${piece.name} · LV ${piece.level} · x${piece.quantity} · DEF ${piece.defense}${piece.swordDamageBonus ? ` · +${piece.swordDamageBonus} sword` : ""}`);
+		const pieces = api.inventory.filter(
+			(item) =>
+				item.type === "armor" && item.slot.toLowerCase() === slot,
+		);
+		for (const piece of pieces)
+			addOption(
+				select,
+				piece.id,
+				`${piece.name} · LV ${piece.level} · x${piece.quantity} · DEF ${piece.defense}${piece.swordDamageBonus ? ` · +${piece.swordDamageBonus} sword` : ""}`,
+			);
 		const equippedId = character?.[`${slot}Id`];
 		const equippedLevel = character?.[`${slot}Level`];
-		const equippedPiece = pieces.find(item => item.armorId === equippedId && item.level === equippedLevel);
-		select.value = equippedPiece?.id || (pieces[0]?.id || "");
-		const button = document.createElement("button"); button.className = "add-button"; button.type = "button"; button.textContent = "↗";
+		const equippedPiece = pieces.find(
+			(item) =>
+				item.armorId === equippedId && item.level === equippedLevel,
+		);
+		select.value = equippedPiece?.id || pieces[0]?.id || "";
+		const button = document.createElement("button");
+		button.className = "add-button";
+		button.type = "button";
+		button.textContent = "↗";
 		button.disabled = !character || !pieces.length;
 		select.onchange = renderGearArt;
 		button.onclick = async () => {
 			try {
-				const piece = api.inventory.find(item => item.id === select.value);
-				const result = await request(`/StoreCharacters/${character.id}/armor/${slot}/${piece.armorId}/${piece.level}`, { method: "PUT" });
-				showMessage(`${result.armorName} equipped · defense ${result.defense}${result.swordDamageBonus ? ` · +${result.swordDamageBonus} sword damage` : ""}.`);
+				const piece = api.inventory.find(
+					(item) => item.id === select.value,
+				);
+				const result = await request(
+					`/StoreCharacters/${character.id}/armor/${slot}/${piece.armorId}/${piece.level}`,
+					{ method: "PUT" },
+				);
+				showMessage(
+					`${result.armorName} equipped · defense ${result.defense}${result.swordDamageBonus ? ` · +${result.swordDamageBonus} sword damage` : ""}.`,
+				);
 				await refreshGame();
-			} catch (exception) { showMessage(exception.message, true); }
+			} catch (exception) {
+				showMessage(exception.message, true);
+			}
 		};
-		row.append(select, button); root.append(label, row);
+		row.append(select, button);
+		root.append(label, row);
 	}
 	renderGearArt();
 }
@@ -472,14 +624,20 @@ async function refreshGame() {
 		api.characters = characters;
 		api.monsters = monsters;
 		api.features = features;
-		if (!characters.some(item => item.id === api.selectedCharacterId))
+		if (
+			!characters.some((item) => item.id === api.selectedCharacterId)
+		)
 			api.selectedCharacterId = characters[0]?.id || null;
 		api.inventory = api.selectedCharacterId
-			? await request(`/StoreCharacters/${api.selectedCharacterId}/inventory`)
+			? await request(
+					`/StoreCharacters/${api.selectedCharacterId}/inventory`,
+				)
 			: [];
-		api.dungeons = await request(api.selectedCharacterId
-			? `/Dungeons?characterId=${api.selectedCharacterId}`
-			: "/Dungeons");
+		api.dungeons = await request(
+			api.selectedCharacterId
+				? `/Dungeons?characterId=${api.selectedCharacterId}`
+				: "/Dungeons",
+		);
 		renderCharacters();
 		renderDungeons();
 		renderSwords();
@@ -498,34 +656,39 @@ byId("new-character-form").addEventListener(
 		event.preventDefault();
 		const input = byId("new-character-name");
 		try {
-		const character = await request("/StoreCharacters", {
+			const character = await request("/StoreCharacters", {
 				method: "POST",
 				body: JSON.stringify({
 					name: input.value.trim(),
-					isHardcore: document.querySelector('input[name="character-mode"]:checked').value === "hardcore",
-					characterClass: document.querySelector('input[name="character-class"]:checked').value,
+					isHardcore:
+						document.querySelector(
+							'input[name="character-mode"]:checked',
+						).value === "hardcore",
+					characterClass: document.querySelector(
+						'input[name="character-class"]:checked',
+					).value,
 				}),
 			});
 			input.value = "";
 			api.characters.push(character);
 			await selectCharacter(character.id);
-			showMessage(`${character.name} joined in ${character.isHardcore ? "Hardcore" : "Casual"} mode.`);
+			showMessage(
+				`${character.name} joined in ${character.isHardcore ? "Hardcore" : "Casual"} mode.`,
+			);
 		} catch (exception) {
 			showMessage(exception.message, true);
 		}
 	},
 );
 
-byId("character-select").addEventListener("change", (event) =>
-	{
-		selectCharacter(event.target.value);
-	},
-);
+byId("character-select").addEventListener("change", (event) => {
+	selectCharacter(event.target.value);
+});
 
 byId("fight-button").addEventListener("click", async () => {
 	const characterId = byId("character-select").value;
 	const dungeonId = byId("dungeon-select").value;
-	const dungeon = api.dungeons.find(item => item.id === dungeonId);
+	const dungeon = api.dungeons.find((item) => item.id === dungeonId);
 	if (!characterId || !dungeon || dungeon.isCompleted)
 		return showMessage(
 			"Create a character and select an uncleared dungeon first.",
@@ -533,8 +696,11 @@ byId("fight-button").addEventListener("click", async () => {
 		);
 	const button = byId("fight-button");
 	const autoFight = byId("auto-fight");
-	const fighter = api.characters.find(item => item.id === characterId);
-	byId("battle-character-art").textContent = characterArt[fighter?.characterClass] || characterArt.Warrior;
+	const fighter = api.characters.find(
+		(item) => item.id === characterId,
+	);
+	byId("battle-character-art").textContent =
+		characterArt[fighter?.characterClass] || characterArt.Warrior;
 	byId("battle-monster-art").textContent = "Choosing a random enemy…";
 	updateBattleHp(fighter?.hp ?? 0, fighter?.maxHp ?? 1, 0, 1);
 	byId("battle-stage").classList.add("fighting");
@@ -547,24 +713,43 @@ byId("fight-button").addEventListener("click", async () => {
 				method: "POST",
 				body: JSON.stringify({ characterId, dungeonId }),
 			});
-			let displayedCharacterHp = api.characters.find(item => item.id === characterId)?.hp ?? result.characterHpAfterFight;
-			let displayedCharacterMaxHp = api.characters.find(item => item.id === characterId)?.maxHp ?? result.characterMaxHp;
+			let displayedCharacterHp =
+				api.characters.find((item) => item.id === characterId)?.hp ??
+				result.characterHpAfterFight;
+			let displayedCharacterMaxHp =
+				api.characters.find((item) => item.id === characterId)
+					?.maxHp ?? result.characterMaxHp;
 			let displayedMonsterHp = result.monsterMaxHp;
-			updateBattleHp(displayedCharacterHp, displayedCharacterMaxHp, displayedMonsterHp, result.monsterMaxHp);
-			const target = api.monsters.find(item => item.name === result.monsterName);
-			monsterArtElement.textContent = result.monsterArt || (target ? getMonsterArt(target) : "");
+			updateBattleHp(
+				displayedCharacterHp,
+				displayedCharacterMaxHp,
+				displayedMonsterHp,
+				result.monsterMaxHp,
+			);
+			const target = api.monsters.find(
+				(item) => item.name === result.monsterName,
+			);
+			monsterArtElement.textContent =
+				result.monsterArt || (target ? getMonsterArt(target) : "");
 			const log = byId("battle-log");
 			log.replaceChildren();
 			for (const line of result.battleLog || []) {
 				const hpLeft = line.match(/^(.+) has (\d+) HP left\.$/);
 				if (hpLeft) {
-					if (hpLeft[1] === result.characterName) displayedCharacterHp = Number(hpLeft[2]);
-					if (hpLeft[1] === result.monsterName) displayedMonsterHp = Number(hpLeft[2]);
+					if (hpLeft[1] === result.characterName)
+						displayedCharacterHp = Number(hpLeft[2]);
+					if (hpLeft[1] === result.monsterName)
+						displayedMonsterHp = Number(hpLeft[2]);
 				}
 				const maxHp = line.match(/^Max HP increased to (\d+)\.$/);
 				if (maxHp) displayedCharacterMaxHp = Number(maxHp[1]);
 				if (hpLeft || maxHp)
-					updateBattleHp(displayedCharacterHp, displayedCharacterMaxHp, displayedMonsterHp, result.monsterMaxHp);
+					updateBattleHp(
+						displayedCharacterHp,
+						displayedCharacterMaxHp,
+						displayedMonsterHp,
+						result.monsterMaxHp,
+					);
 				const entry = document.createElement("p");
 				entry.textContent = `> ${line}`;
 				if (/defeat|wins|victory|level up/i.test(line))
@@ -576,7 +761,11 @@ byId("fight-button").addEventListener("click", async () => {
 				await new Promise((resolve) => setTimeout(resolve, 450));
 			}
 			if (result.characterWon) {
-				monsterArtElement.textContent = monsterArtElement.textContent.replace(/([oOxX@])([ .]{0,3})([oOxX@])/g, "X X");
+				monsterArtElement.textContent =
+					monsterArtElement.textContent.replace(
+						/([oOxX@])([ .]{0,3})([oOxX@])/g,
+						"X X",
+					);
 				monsterArtElement.classList.add("dead");
 				await new Promise((resolve) => setTimeout(resolve, 750));
 			}
@@ -590,9 +779,14 @@ byId("fight-button").addEventListener("click", async () => {
 			showMessage(result.message || "Fight complete.");
 			await refreshGame();
 			if (result.lootChoices?.length) await chooseLoot(result);
-			let character = api.characters.find((item) => item.id === characterId);
-			if (byId("auto-camp").checked &&
-				character && character.hp <= character.maxHp / 2) {
+			let character = api.characters.find(
+				(item) => item.id === characterId,
+			);
+			if (
+				byId("auto-camp").checked &&
+				character &&
+				character.hp <= character.maxHp / 2
+			) {
 				try {
 					const campResult = await request(
 						`/StoreCharacters/${characterId}/camp`,
@@ -600,19 +794,31 @@ byId("fight-button").addEventListener("click", async () => {
 					);
 					showMessage(`Auto-camp: ${campResult.message}`);
 					await refreshGame();
-					character = api.characters.find((item) => item.id === characterId);
+					character = api.characters.find(
+						(item) => item.id === characterId,
+					);
 				} catch (exception) {
 					byId("auto-fight").checked = false;
-					showMessage(`Auto-camp could not heal: ${exception.message}`, true);
+					showMessage(
+						`Auto-camp could not heal: ${exception.message}`,
+						true,
+					);
 					break;
 				}
 			}
-			if (autoFight.checked && (!character || character.hp < character.maxHp / 2)) {
+			if (
+				autoFight.checked &&
+				(!character || character.hp < character.maxHp / 2)
+			) {
 				autoFight.checked = false;
 				showMessage("Auto-fight stopped: character HP is below 50%.");
 				break;
 			}
-			if (!autoFight.checked || !result.characterWon || result.dungeonCompleted)
+			if (
+				!autoFight.checked ||
+				!result.characterWon ||
+				result.dungeonCompleted
+			)
 				break;
 		} while (autoFight.checked);
 	} catch (exception) {
@@ -644,11 +850,16 @@ byId("buy-auto-camp").addEventListener("click", () =>
 
 async function purchaseAutoFeature(feature) {
 	try {
-		api.features = await request(`/auth/features/${feature}/purchase`, {
-			method: "POST",
-		});
+		api.features = await request(
+			`/auth/features/${feature}/purchase`,
+			{
+				method: "POST",
+			},
+		);
 		renderFeatures();
-		showMessage(`${feature === "auto-fight" ? "Auto-fight" : "Auto-camp"} unlocked.`);
+		showMessage(
+			`${feature === "auto-fight" ? "Auto-fight" : "Auto-camp"} unlocked.`,
+		);
 	} catch (exception) {
 		showMessage(exception.message, true);
 	}
@@ -656,7 +867,9 @@ async function purchaseAutoFeature(feature) {
 
 byId("auto-camp").addEventListener("change", (event) => {
 	if (event.target.checked)
-		showMessage("Auto-camp will heal after a victory when HP is 50% or lower.");
+		showMessage(
+			"Auto-camp will heal after a victory when HP is 50% or lower.",
+		);
 });
 
 byId("camp-button").addEventListener("click", async () => {
@@ -677,7 +890,9 @@ byId("camp-button").addEventListener("click", async () => {
 
 byId("equip-button").addEventListener("click", async () => {
 	const characterId = byId("character-select").value;
-	const item = api.inventory.find(gear => gear.id === byId("sword-select").value);
+	const item = api.inventory.find(
+		(gear) => gear.id === byId("sword-select").value,
+	);
 	if (!characterId || !item)
 		return showMessage("Choose a character and sword first.", true);
 	try {
@@ -703,32 +918,85 @@ async function chooseLoot(result) {
 	root.replaceChildren();
 	autoLoot.checked = localStorage.getItem("dd-auto-loot") !== "false";
 	for (const [index, item] of result.lootChoices.entries()) {
-		const card = document.createElement("article"); card.className = "loot-card";
-		const art = document.createElement("pre"); art.textContent = item.asciiArt;
-		const name = document.createElement("strong"); name.textContent = `${item.name} · LV ${item.level}`;
+		const card = document.createElement("article");
+		card.className = "loot-card";
+		const art = document.createElement("pre");
+		art.textContent = item.asciiArt;
+		const name = document.createElement("strong");
+		name.textContent = `${item.name} · LV ${item.level}`;
 		const stats = document.createElement("p");
-		stats.textContent = item.type === "sword" ? `Sword · +${item.damage} damage` : `${item.slot} · ${item.defense} defense${item.swordDamageBonus ? ` · +${item.swordDamageBonus} sword damage` : ""}`;
-		const character = api.characters.find(hero => hero.id === api.selectedCharacterId);
-		const equippedId = item.type === "sword" ? character?.swordId : character?.[`${item.slot.toLowerCase()}Id`];
-		const equippedLevel = item.type === "sword" ? character?.swordLevel : character?.[`${item.slot.toLowerCase()}Level`];
-		const equippedStatus = document.createElement("p"); equippedStatus.className = "loot-equipped";
-		equippedStatus.textContent = equippedId !== item.itemId ? "Not currently equipped." : equippedLevel === item.level ? `Currently equipped · LV ${equippedLevel}.` : `Same item equipped · LV ${equippedLevel}.`;
-		const owned = api.inventory.filter(gear => gear.type === item.type && (item.type === "sword" ? gear.swordId === item.itemId : gear.armorId === item.itemId));
+		stats.textContent =
+			item.type === "sword"
+				? `Sword · +${item.damage} damage`
+				: `${item.slot} · ${item.defense} defense${item.swordDamageBonus ? ` · +${item.swordDamageBonus} sword damage` : ""}`;
+		const character = api.characters.find(
+			(hero) => hero.id === api.selectedCharacterId,
+		);
+		const equippedId =
+			item.type === "sword"
+				? character?.swordId
+				: character?.[`${item.slot.toLowerCase()}Id`];
+		const equippedLevel =
+			item.type === "sword"
+				? character?.swordLevel
+				: character?.[`${item.slot.toLowerCase()}Level`];
+		const equippedStatus = document.createElement("p");
+		equippedStatus.className = "loot-equipped";
+		equippedStatus.textContent =
+			equippedId !== item.itemId
+				? "Not currently equipped."
+				: equippedLevel === item.level
+					? `Currently equipped · LV ${equippedLevel}.`
+					: `Same item equipped · LV ${equippedLevel}.`;
+		const owned = api.inventory.filter(
+			(gear) =>
+				gear.type === item.type &&
+				(item.type === "sword"
+					? gear.swordId === item.itemId
+					: gear.armorId === item.itemId),
+		);
 		const counts = new Map();
-		for (const gear of owned) counts.set(gear.level, (counts.get(gear.level) || 0) + gear.quantity);
-		const ownership = document.createElement("p"); ownership.className = "loot-owned";
-		ownership.textContent = counts.size ? `Owned: ${[...counts].sort(([a], [b]) => a - b).map(([level, quantity]) => `LV ${level} ×${quantity}`).join(" · ")}` : "Owned: none";
+		for (const gear of owned)
+			counts.set(
+				gear.level,
+				(counts.get(gear.level) || 0) + gear.quantity,
+			);
+		const ownership = document.createElement("p");
+		ownership.className = "loot-owned";
+		ownership.textContent = counts.size
+			? `Owned: ${[...counts]
+					.sort(([a], [b]) => a - b)
+					.map(([level, quantity]) => `LV ${level} ×${quantity}`)
+					.join(" · ")}`
+			: "Owned: none";
 		const nextLevel = item.level;
 		const quantityAfterPick = (counts.get(nextLevel) || 0) + 1;
-		const upgrade = document.createElement("p"); upgrade.className = "loot-upgrade";
-		upgrade.textContent = nextLevel >= 3 ? "Already at max level." : quantityAfterPick >= 3 ? `This pick upgrades it to LV ${nextLevel + 1}.` : `${3 - quantityAfterPick} more at LV ${nextLevel} to upgrade.`;
-		const button = document.createElement("button"); button.className = "primary-button"; button.textContent = "Choose this item";
+		const upgrade = document.createElement("p");
+		upgrade.className = "loot-upgrade";
+		upgrade.textContent =
+			nextLevel >= 3
+				? "Already at max level."
+				: quantityAfterPick >= 3
+					? `This pick upgrades it to LV ${nextLevel + 1}.`
+					: `${3 - quantityAfterPick} more at LV ${nextLevel} to upgrade.`;
+		const button = document.createElement("button");
+		button.className = "primary-button";
+		button.textContent = "Choose this item";
 		button.onclick = () => selectLoot(index, false);
-		card.append(art, name, stats, equippedStatus, ownership, upgrade, button); root.append(card);
+		card.append(
+			art,
+			name,
+			stats,
+			equippedStatus,
+			ownership,
+			upgrade,
+			button,
+		);
+		root.append(card);
 	}
-	dialog.oncancel = event => event.preventDefault();
+	dialog.oncancel = (event) => event.preventDefault();
 	dialog.showModal();
-	return new Promise(resolve => {
+	return new Promise((resolve) => {
 		let secondsLeft = 10;
 		let timer;
 		let claiming = false;
@@ -736,7 +1004,8 @@ async function chooseLoot(result) {
 		const startCountdown = () => {
 			clearInterval(timer);
 			if (!autoLoot.checked) {
-				countdown.textContent = "Auto-loot is off. Choose an item to continue the fight.";
+				countdown.textContent =
+					"Auto-loot is off. Choose an item to continue the fight.";
 				return;
 			}
 			secondsLeft = 10;
@@ -745,24 +1014,33 @@ async function chooseLoot(result) {
 				secondsLeft--;
 				if (secondsLeft <= 0) {
 					clearInterval(timer);
-					claimLoot(Math.floor(Math.random() * result.lootChoices.length), true);
-				} else countdown.textContent = `Random loot selected in ${secondsLeft} seconds.`;
+					claimLoot(
+						Math.floor(Math.random() * result.lootChoices.length),
+						true,
+					);
+				} else
+					countdown.textContent = `Random loot selected in ${secondsLeft} seconds.`;
 			}, 1000);
 		};
 		const claimLoot = async (index, automatic) => {
 			if (claiming) return;
 			claiming = true;
 			clearInterval(timer);
-			buttons.forEach(button => button.disabled = true);
+			buttons.forEach((button) => (button.disabled = true));
 			try {
-				await request(`/Fight/${result.lootOfferId}/loot`, { method: "POST", body: JSON.stringify({ choiceIndex: index }) });
+				await request(`/Fight/${result.lootOfferId}/loot`, {
+					method: "POST",
+					body: JSON.stringify({ choiceIndex: index }),
+				});
 				dialog.close();
-				showMessage(`${automatic ? "Auto-picked" : "Chosen"}: ${result.lootChoices[index].name}.`);
+				showMessage(
+					`${automatic ? "Auto-picked" : "Chosen"}: ${result.lootChoices[index].name}.`,
+				);
 				await refreshGame();
 				resolve();
 			} catch (exception) {
 				claiming = false;
-				buttons.forEach(button => button.disabled = false);
+				buttons.forEach((button) => (button.disabled = false));
 				showMessage(exception.message, true);
 				startCountdown();
 			}

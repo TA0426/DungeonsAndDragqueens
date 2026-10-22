@@ -191,8 +191,11 @@ public class GameService(
         var scale = (1 + (dungeon.RecommendedLevel - 1) * 0.025) * (0.8 + wave * 0.024) * (isBoss ? 2.1 : 1);
         var monster = new StoreMonster
         {
-            Id = template.Id, Name = template.Name, TypeOfMonster = template.TypeOfMonster,
-            Quantity = 1, Hp = Math.Max(1, (int)Math.Ceiling(template.Hp * scale)),
+            Id = template.Id,
+            Name = template.Name,
+            TypeOfMonster = template.TypeOfMonster,
+            Quantity = 1,
+            Hp = Math.Max(1, (int)Math.Ceiling(template.Hp * scale)),
             Damage = Math.Max(1, (int)Math.Ceiling(template.Damage * scale)),
             XPReward = Math.Max(1, (int)Math.Ceiling(template.XPReward * scale)),
             Description = template.Description
