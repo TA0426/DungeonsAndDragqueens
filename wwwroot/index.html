@@ -8,8 +8,8 @@
 		/>
 		<meta name="theme-color" content="#11150f" />
 		<title>Dungeons &amp; Dragqueens</title>
-		<link rel="stylesheet" href="/css/game.css?v=20261022-12" />
-		<script src="/js/game.js?v=20261022-12" defer></script>
+		<link rel="stylesheet" href="/css/game.css?v=20261023-15" />
+		<script src="/js/game.js?v=20261023-15" defer></script>
 	</head>
 	<body>
 		<main class="shell">
@@ -158,10 +158,10 @@
 							<span class="count-badge" id="character-count">0</span>
 						</div>
 						<div id="character-list" class="character-list"></div>
-						<form id="new-character-form" class="inline-form">
-							<label for="new-character-name"
-								>Recruit a character</label
-							>
+						<details class="recruit-panel" id="recruit-panel">
+							<summary>Recruit a character</summary>
+							<form id="new-character-form" class="inline-form">
+								<label for="new-character-name">Character name</label>
 							<fieldset class="class-choice">
 								<legend>Choose a class</legend>
 								<div id="character-class-options"></div>
@@ -201,7 +201,8 @@
 									+
 								</button>
 							</div>
-						</form>
+							</form>
+						</details>
 					</aside>
 
 					<section class="panel terminal-panel">
@@ -374,10 +375,6 @@
 					></p>
 					<div id="loot-choices" class="loot-choices"></div>
 				</dialog>
-				<footer class="footer-note">
-					<span>ONE LIFE. QUESTIONABLE OUTFITS.</span
-					><span>MADE FOR THE BRAVE (AND THE DRAMATIC)</span>
-				</footer>
 			</section>
 		</main>
 	</body>

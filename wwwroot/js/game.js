@@ -318,12 +318,6 @@ function renderCharacters() {
 		);
 		const card = document.createElement("article");
 		card.className = `character-card${character.id === api.selectedCharacterId ? " selected" : ""}`;
-		card.tabIndex = 0;
-		card.setAttribute("role", "button");
-		card.setAttribute(
-			"aria-pressed",
-			character.id === api.selectedCharacterId,
-		);
 		const title = document.createElement("div");
 		title.className = "card-title";
 		const portrait = document.createElement("pre");
@@ -352,13 +346,30 @@ function renderCharacters() {
 		body.className = "character-body";
 		body.append(portrait, details);
 		card.append(body);
+		const deleteButton = document.createElement("button");
+		deleteButton.type = "button";
+		deleteButton.className = "delete-character-button";
+		deleteButton.textContent = "DELETE CHARACTER";
+		deleteButton.setAttribute("aria-label", `Delete ${character.name}`);
+		deleteButton.addEventListener("click", async (event) => {
+			event.stopPropagation();
+			if (window.prompt('Type exactly: er du sure? / are you sure?') !== "er du sure? / are you sure?") return;
+			try {
+				await request(`/StoreCharacters/${character.id}`, { method: "DELETE" });
+				if (api.selectedCharacterId === character.id) {
+					sessionStorage.removeItem("dd-character");
+					api.selectedCharacterId = null;
+				}
+				await refreshGame();
+				showMessage(`${character.name} was deleted.`);
+			} catch (exception) {
+				showMessage(exception.message, true);
+			}
+		});
+		card.append(deleteButton);
 		card.addEventListener("click", () =>
 			selectCharacter(character.id),
 		);
-		card.addEventListener("keydown", (event) => {
-			if (event.key === "Enter" || event.key === " ")
-				selectCharacter(character.id);
-		});
 		list.append(card);
 	}
 	select.value = api.selectedCharacterId;
@@ -390,23 +401,24 @@ function renderDungeons() {
 	byId("dungeon-count").textContent = api.dungeons.length;
 	if (
 		!api.dungeons.some(
-			(item) =>
-				item.id === api.selectedDungeonId && !item.isCompleted,
+			(item) => item.id === api.selectedDungeonId && item.isUnlocked,
 		)
 	)
 		api.selectedDungeonId =
-			api.dungeons.find((item) => !item.isCompleted)?.id ||
-			api.dungeons[0]?.id ||
+			api.dungeons.find((item) => item.isUnlocked && !item.isCompleted)?.id ||
+			api.dungeons.find((item) => item.isUnlocked)?.id ||
 			null;
 	for (const dungeon of api.dungeons) {
+		const dungeonIndex = api.dungeons.findIndex((item) => item.id === dungeon.id);
+		const previous = api.dungeons[dungeonIndex - 1];
 		addOption(
 			select,
 			dungeon.id,
-			`${dungeon.name}${dungeon.isCompleted ? " · CLEARED" : ` · WAVE ${dungeon.currentWave}`}`,
+			`${dungeon.name}${!dungeon.isUnlocked ? " · LOCKED" : dungeon.isEndless ? ` · WAVE ${dungeon.currentWave}` : dungeon.isCompleted ? ` · CLEARED ×${dungeon.clearCount} · REPLAY` : ` · WAVE ${dungeon.currentWave}`}`,
 		);
 		const card = document.createElement("article");
-		card.className = `dungeon-card${dungeon.id === api.selectedDungeonId ? " selected" : ""}${dungeon.isCompleted ? " cleared" : ""}`;
-		if (dungeon.isCompleted) select.lastElementChild.disabled = true;
+		card.className = `dungeon-card${dungeon.id === api.selectedDungeonId ? " selected" : ""}${dungeon.isCompleted ? " cleared" : ""}${!dungeon.isUnlocked ? " locked" : ""}${dungeon.isEndless ? " endless" : ""}`;
+		if (!dungeon.isUnlocked) select.lastElementChild.disabled = true;
 		card.tabIndex = 0;
 		const heading = document.createElement("div");
 		heading.className = "card-title";
@@ -417,7 +429,7 @@ function renderDungeons() {
 		if (dungeon.isCompleted) {
 			const victory = document.createElement("span");
 			victory.className = "dungeon-victory";
-			victory.textContent = "🏆 DEFEATED";
+			victory.textContent = `🏆 CLEARED ×${dungeon.clearCount}`;
 			heading.append(name, victory, difficulty);
 		} else heading.append(name, difficulty);
 		const art = document.createElement("pre");
@@ -431,10 +443,15 @@ function renderDungeons() {
 		description.textContent = dungeon.description;
 		const stats = document.createElement("p");
 		stats.className = "card-stats";
-		stats.textContent = `Recommended: LV ${dungeon.recommendedLevel} · Sword ${dungeon.recommendedSwordDamage}+ · ${dungeon.isCompleted ? "CLEARED" : dungeon.isBossWave ? "BOSS WAVE 51" : `WAVE ${dungeon.currentWave}/50`}`;
+		stats.textContent = !dungeon.isUnlocked
+			? `Defeat ${previous?.name || "the previous dungeon"} to unlock.`
+			: `${dungeon.isEndless ? "Endless" : `Recommended: LV ${dungeon.recommendedLevel} · Sword ${dungeon.recommendedSwordDamage}+`} · ${dungeon.isBossWave ? dungeon.isEndless ? "ENDLESS BOSS" : "BOSS WAVE 51" : dungeon.isEndless ? `WAVE ${dungeon.currentWave} · BOSS EVERY 10` : `WAVE ${dungeon.currentWave}/50`} · ${dungeon.clearCount} clear${dungeon.clearCount === 1 ? "" : "s"}`;
 		card.append(art, heading, world, description, stats);
 		const choose = () => {
-			if (dungeon.isCompleted) return;
+			if (!dungeon.isUnlocked) {
+				showMessage(`Defeat ${previous?.name || "the previous dungeon"} first.`, true);
+				return;
+			}
 			api.selectedDungeonId = dungeon.id;
 			sessionStorage.setItem("dd-dungeon", dungeon.id);
 			select.value = dungeon.id;
@@ -448,6 +465,7 @@ function renderDungeons() {
 	}
 	select.value = api.selectedDungeonId || "";
 	select.onchange = () => {
+		if (!api.dungeons.find((item) => item.id === select.value)?.isUnlocked) return;
 		api.selectedDungeonId = select.value;
 		sessionStorage.setItem("dd-dungeon", select.value);
 		renderDungeons();
@@ -671,6 +689,7 @@ byId("new-character-form").addEventListener(
 			});
 			input.value = "";
 			api.characters.push(character);
+			byId("recruit-panel").open = false;
 			await selectCharacter(character.id);
 			showMessage(
 				`${character.name} joined in ${character.isHardcore ? "Hardcore" : "Casual"} mode.`,
@@ -689,9 +708,9 @@ byId("fight-button").addEventListener("click", async () => {
 	const characterId = byId("character-select").value;
 	const dungeonId = byId("dungeon-select").value;
 	const dungeon = api.dungeons.find((item) => item.id === dungeonId);
-	if (!characterId || !dungeon || dungeon.isCompleted)
+	if (!characterId || !dungeon || !dungeon.isUnlocked)
 		return showMessage(
-			"Create a character and select an uncleared dungeon first.",
+			"Create a character and select an unlocked dungeon first.",
 			true,
 		);
 	const button = byId("fight-button");

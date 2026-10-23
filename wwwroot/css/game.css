@@ -319,6 +319,20 @@ select:focus-visible {
 	border-color: var(--green-dark);
 	box-shadow: inset 3px 0 var(--green);
 }
+.delete-character-button {
+	margin-top: 8px;
+	border: 1px solid #73433e;
+	border-radius: 4px;
+	padding: 4px 7px;
+	background: transparent;
+	color: #d58b80;
+	font: 9px var(--mono);
+	cursor: pointer;
+}
+.delete-character-button:hover,
+.delete-character-button:focus-visible {
+	background: #402623;
+}
 .card-title {
 	display: flex;
 	align-items: center;
@@ -357,6 +371,33 @@ select:focus-visible {
 	padding-top: 8px;
 	display: flex;
 	flex-direction: column;
+}
+.recruit-panel > summary {
+	display: flex;
+	align-items: center;
+	border-top: 1px solid var(--line);
+	padding: 10px 0 2px;
+	color: var(--green);
+	font: 11px var(--mono);
+	cursor: pointer;
+	list-style: none;
+}
+.recruit-panel > summary::-webkit-details-marker {
+	display: none;
+}
+.recruit-panel > summary::before {
+	content: "▸";
+	margin-right: 6px;
+}
+.recruit-panel[open] > summary {
+	margin-bottom: 8px;
+}
+.recruit-panel[open] > summary::before {
+	content: "▾";
+}
+.recruit-panel .inline-form {
+	border-top: 0;
+	padding-top: 0;
 }
 .input-row {
 	display: flex;
@@ -974,8 +1015,8 @@ body {
 		padding-top: 8px;
 	}
 	.armor-slots {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 2px 8px;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 2px;
 		margin-top: 6px;
 	}
 	.armor-slots label {
@@ -1171,6 +1212,9 @@ body {
 .dungeon-card.cleared .dungeon-art {
 	color: #888;
 }
+.dungeon-card.cleared { cursor: pointer; }
+.dungeon-card.locked { cursor: not-allowed; opacity: .45; }
+.dungeon-card.endless { border-color: #b8a1ff; }
 .battle-combatant {
 	display: flex;
 	min-width: 0;

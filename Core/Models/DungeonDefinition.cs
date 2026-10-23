@@ -23,4 +23,7 @@ public record DungeonResponse(
     string AsciiArt,
     int CurrentWave,
     bool IsCompleted,
-    bool IsBossWave);
+    bool IsBossWave,
+    bool IsUnlocked,
+    int ClearCount,
+    bool IsEndless);

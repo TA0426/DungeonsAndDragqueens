@@ -67,6 +67,22 @@ public class ApiTests
     }
 
     [Fact]
+    public async Task DeleteCharacter_RemovesOnlyTheCurrentUsersCharacter()
+    {
+        await using var factory = new WebApplicationFactory<Program>();
+        using var owner = await CreateAuthenticatedClientAsync(factory);
+        using var otherUser = await CreateAuthenticatedClientAsync(factory);
+        var created = await owner.PostAsJsonAsync("/StoreCharacters", new { name = "Anna" });
+        using var json = System.Text.Json.JsonDocument.Parse(await created.Content.ReadAsStringAsync());
+        var id = json.RootElement.GetProperty("id").GetGuid();
+
+        Assert.Equal(HttpStatusCode.NotFound, (await otherUser.DeleteAsync($"/StoreCharacters/{id}")).StatusCode);
+        Assert.Equal(HttpStatusCode.NoContent, (await owner.DeleteAsync($"/StoreCharacters/{id}")).StatusCode);
+        var remaining = await owner.GetFromJsonAsync<List<System.Text.Json.JsonElement>>("/StoreCharacters");
+        Assert.DoesNotContain(remaining!, character => character.GetProperty("id").GetGuid() == id);
+    }
+
+    [Fact]
     public async Task PostFight_ReturnsOk()
     {
         await using var factory =

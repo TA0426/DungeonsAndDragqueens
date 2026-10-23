@@ -31,6 +31,9 @@ namespace DungeonsAndDragqueens.Migrations
                     b.Property<Guid>("CharacterId")
                         .HasColumnType("uuid");
 
+                    b.Property<int>("ClearCount")
+                        .HasColumnType("integer");
+
                     b.Property<int>("CurrentWave")
                         .HasColumnType("integer");
 

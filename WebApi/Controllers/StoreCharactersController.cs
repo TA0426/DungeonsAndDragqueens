@@ -69,6 +69,14 @@ public class StoreCharactersController(CharacterService service) : ControllerBas
             character.SwordLevel, character.BootsLevel, character.ChestLevel, character.LegsLevel, character.GlovesLevel, character.HelmetLevel));
     }
 
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var userId = User.GetUserId();
+        if (userId is null) return Unauthorized();
+        return await service.DeleteAsync(id, userId) ? NoContent() : NotFound();
+    }
+
     [HttpPost]
     public async Task<IActionResult> Post(CreateCharacterDTO dto)
     {

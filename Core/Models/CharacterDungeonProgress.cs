@@ -7,4 +7,5 @@ public class CharacterDungeonProgress
     public string DungeonId { get; set; } = "";
     public int CurrentWave { get; set; } = 1;
     public bool IsCompleted { get; set; }
+    public int ClearCount { get; set; }
 }

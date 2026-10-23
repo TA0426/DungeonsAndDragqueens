@@ -96,15 +96,14 @@ public class GameService(
             account.Gold += result.GoldEarned;
             await database.SaveChangesAsync();
 
-            var noLoot = Random.Shared.Next(100) < 40;
-
-            if (noLoot)
+            var tier = monster.XPReward >= 250 ? 3 : monster.XPReward >= 100 ? 2 : 1;
+            var dropChance = tier switch { 1 => 15, 2 => 25, _ => 45 };
+            if (Random.Shared.Next(100) >= dropChance)
             {
                 result.Message = "You defeated the monster, but found no loot.";
             }
             else
             {
-                var tier = monster.XPReward >= 250 ? 3 : monster.XPReward >= 100 ? 2 : 1;
                 var swords = await database.Swords.AsNoTracking().ToListAsync();
                 var armors = await database.Armors.AsNoTracking().ToListAsync();
                 var pool = swords.Where(item => (item.Damage <= 20 ? 1 : item.Damage <= 32 ? 2 : 3) == tier)
@@ -154,14 +153,30 @@ public class GameService(
         var progress = characterId.HasValue
             ? await database.CharacterDungeonProgress.Where(item => item.CharacterId == characterId).ToDictionaryAsync(item => item.DungeonId)
             : new Dictionary<string, CharacterDungeonProgress>();
-        return DungeonCatalog.All.Select(dungeon =>
+        var clearCounts = progress.ToDictionary(item => item.Key, item => item.Value.ClearCount);
+        var dungeons = DungeonCatalog.All.Select((dungeon, index) =>
         {
             var state = progress.GetValueOrDefault(dungeon.Id);
             var wave = state?.CurrentWave ?? 1;
+            var clearCount = state?.ClearCount ?? 0;
             return new DungeonResponse(dungeon.Id, dungeon.Name, dungeon.World, dungeon.Difficulty,
                 dungeon.RecommendedLevel, dungeon.RecommendedSwordDamage, dungeon.Description,
-                dungeon.AsciiArt, wave, state?.IsCompleted ?? false, wave == 51 && !(state?.IsCompleted ?? false));
+                dungeon.AsciiArt, wave, clearCount > 0, DungeonProgression.IsBossWave(dungeon.Id, wave),
+                DungeonProgression.IsUnlocked(index, clearCounts), clearCount, false);
         }).ToList();
+        if (characterId.HasValue && DungeonProgression.IsEndlessUnlocked(clearCounts))
+        {
+            var state = progress.GetValueOrDefault(DungeonCatalog.EndlessId);
+            var wave = state?.CurrentWave ?? 1;
+            dungeons.Add(new DungeonResponse(
+                DungeonCatalog.Endless.Id, DungeonCatalog.Endless.Name, DungeonCatalog.Endless.World,
+                DungeonCatalog.Endless.Difficulty, DungeonCatalog.Endless.RecommendedLevel,
+                DungeonCatalog.Endless.RecommendedSwordDamage, DungeonCatalog.Endless.Description,
+                DungeonCatalog.Endless.AsciiArt, wave, false,
+                DungeonProgression.IsBossWave(DungeonCatalog.EndlessId, wave), true,
+                state?.ClearCount ?? 0, true));
+        }
+        return dungeons;
     }
 
     public async Task<CombatResult> StartDungeonFightAsync(Guid characterId, string dungeonId, string userId)
@@ -169,35 +184,48 @@ public class GameService(
         var character = await database.Characters.FirstOrDefaultAsync(item => item.Id == characterId && item.UserId == userId)
             ?? throw new KeyNotFoundException("Character not found.");
         var dungeon = DungeonCatalog.Find(dungeonId) ?? throw new KeyNotFoundException("Dungeon not found.");
+        var endless = dungeonId == DungeonCatalog.EndlessId;
+        var clearCounts = await database.CharacterDungeonProgress
+            .Where(item => item.CharacterId == characterId)
+            .ToDictionaryAsync(item => item.DungeonId, item => item.ClearCount);
+        if (endless && !DungeonProgression.IsEndlessUnlocked(clearCounts))
+            throw new InvalidOperationException("Clear all five dungeons to unlock Endless Descent.");
+        var dungeonIndex = DungeonCatalog.IndexOf(dungeonId);
+        if (!endless && !DungeonProgression.IsUnlocked(dungeonIndex, clearCounts))
+            throw new InvalidOperationException($"Clear {DungeonCatalog.All[dungeonIndex - 1].Name} first to unlock {dungeon.Name}.");
         var progress = await database.CharacterDungeonProgress.FirstOrDefaultAsync(item => item.CharacterId == characterId && item.DungeonId == dungeonId);
         if (progress is null)
         {
             progress = new CharacterDungeonProgress { CharacterId = characterId, DungeonId = dungeonId };
             database.CharacterDungeonProgress.Add(progress);
         }
-        if (progress.IsCompleted) throw new InvalidOperationException("This dungeon has already been cleared by this character.");
 
         var wave = progress.CurrentWave;
-        var isBoss = wave == 51;
+        var isBoss = DungeonProgression.IsBossWave(dungeonId, wave);
         string monsterName;
-        if (isBoss) monsterName = dungeon.BossName;
+        if (isBoss)
+            monsterName = endless
+                ? DungeonCatalog.All[((wave / 10) - 1) % DungeonCatalog.All.Count].BossName
+                : dungeon.BossName;
         else
         {
-            var pool = dungeon.EnemyWaves[wave <= 16 ? 0 : wave <= 34 ? 1 : 2];
+            var pool = endless
+                ? dungeon.EnemyWaves[0]
+                : dungeon.EnemyWaves[wave <= 16 ? 0 : wave <= 34 ? 1 : 2];
             monsterName = pool[Random.Shared.Next(pool.Length)];
         }
         var template = await database.StoreMonsters.FirstOrDefaultAsync(item => item.Name == monsterName)
             ?? throw new InvalidOperationException($"Monster '{monsterName}' is missing from the monster catalog.");
-        var scale = (1 + (dungeon.RecommendedLevel - 1) * 0.025) * (0.8 + wave * 0.024) * (isBoss ? 2.1 : 1);
+        var scale = DungeonProgression.GetMonsterScale(dungeonId, wave, progress.ClearCount);
         var monster = new StoreMonster
         {
             Id = template.Id,
             Name = template.Name,
             TypeOfMonster = template.TypeOfMonster,
             Quantity = 1,
-            Hp = Math.Max(1, (int)Math.Ceiling(template.Hp * scale)),
-            Damage = Math.Max(1, (int)Math.Ceiling(template.Damage * scale)),
-            XPReward = Math.Max(1, (int)Math.Ceiling(template.XPReward * scale)),
+            Hp = DungeonProgression.ScaleStat(template.Hp, scale.Hp),
+            Damage = DungeonProgression.ScaleStat(template.Damage, scale.Damage),
+            XPReward = template.XPReward,
             Description = template.Description
         };
 
@@ -226,9 +254,11 @@ public class GameService(
             return result;
         }
 
-        if (isBoss)
+        if (isBoss && !endless)
         {
             progress.IsCompleted = true;
+            progress.ClearCount++;
+            progress.CurrentWave = 1;
             result.DungeonCompleted = true;
         }
         else progress.CurrentWave++;
@@ -237,12 +267,15 @@ public class GameService(
         result.GoldEarned = Math.Max(5, monster.XPReward / 2);
         account.Gold += result.GoldEarned;
         result.Message = isBoss
-            ? $"BOSS DEFEATED! You cleared {dungeon.Name}."
+            ? endless
+                ? $"ENDLESS BOSS DEFEATED! You survived wave {wave}. Next: wave {progress.CurrentWave}."
+                : $"BOSS DEFEATED! You cleared {dungeon.Name}."
             : $"Wave {wave} cleared in {dungeon.Name}. Next: wave {progress.CurrentWave}.";
 
-        if (isBoss || Random.Shared.Next(100) >= 40)
+        var lootChance = DungeonProgression.GetLootChance(dungeonId, wave);
+        if (Random.Shared.Next(100) < lootChance)
         {
-            var tier = isBoss || wave >= 35 ? 3 : wave >= 17 ? 2 : 1;
+            var tier = DungeonProgression.GetLootTier(dungeonId, wave);
             var offer = await CreateLootOfferAsync(characterId, tier);
             if (offer is not null)
             {
@@ -251,6 +284,7 @@ public class GameService(
                 result.Message += " Choose one of three loot rewards.";
             }
         }
+        else result.Message += " No loot this time.";
         result.BattleLog.Add($"You earned {result.GoldEarned} gold.");
         await database.SaveChangesAsync();
         return result;

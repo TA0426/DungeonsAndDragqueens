@@ -22,6 +22,22 @@ public class CharacterService(StoreMonstersContext database)
                 character.Id == id &&
                 character.UserId == userId);
     }
+
+    public async Task<bool> DeleteAsync(Guid id, string userId)
+    {
+        var character = await database.Characters
+            .FirstOrDefaultAsync(item => item.Id == id && item.UserId == userId);
+        if (character is null) return false;
+
+        database.CharacterInventoryItems.RemoveRange(database.CharacterInventoryItems.Where(item => item.CharacterId == id));
+        database.CharacterLootOffers.RemoveRange(database.CharacterLootOffers.Where(item => item.CharacterId == id));
+        database.CharacterMonsterProgress.RemoveRange(database.CharacterMonsterProgress.Where(item => item.CharacterId == id));
+        database.CharacterDungeonProgress.RemoveRange(database.CharacterDungeonProgress.Where(item => item.CharacterId == id));
+        database.Characters.Remove(character);
+        await database.SaveChangesAsync();
+        return true;
+    }
+
     public async Task<StoreCharacter> CreateAsync(
         CreateCharacterDTO dto,
         string userId)
