@@ -10,12 +10,12 @@ The browser client is served by the API at `/`. Protected routes require `Author
 
 ```json
 {
-  "userName": "example_player",
-  "password": "a-password-with-12-chars"
+	"userName": "example_player",
+	"password": "a-password-with-5-chars"
 }
 ```
 
-Returns `200 OK` and a JWT. Usernames must be 3–32 letters, digits, `_` or `-`; passwords must be 12–128 characters. Duplicate usernames return `409 Conflict`.
+Returns `200 OK` and a JWT. Usernames must be 3–32 letters, digits, `_` or `-`; passwords must be 5–128 characters. Duplicate usernames return `409 Conflict`.
 
 ### Log in
 
@@ -25,27 +25,27 @@ Returns `200 OK` and a JWT. Usernames must be 3–32 letters, digits, `_` or `-`
 
 All routes below require a valid JWT.
 
-| Method | Route | Purpose |
-| --- | --- | --- |
-| `GET` | `/StoreCharacters` | List the signed-in player's characters |
-| `GET` | `/StoreCharacters/{id}` | Get one of the player's characters |
-| `POST` | `/StoreCharacters` | Create a character: `{ "name": "Anna" }` |
-| `PUT` | `/StoreCharacters/{characterId}/equipment/{swordId}` | Equip a sword |
-| `POST` | `/StoreCharacters/{id}/camp` | Rest after the required rounds |
-| `GET` | `/StoreMonsters?page=1&pageSize=100` | Browse monsters |
-| `GET` | `/StoreSwords` | Browse swords |
-| `POST` | `/Fight` | Fight a monster |
-| `POST` | `/StoreMonsters` | Add a monster to the shared catalog |
-| `DELETE` | `/StoreMonsters/{id}` | Remove a monster from the shared catalog |
-| `POST` | `/StoreSwords` | Add a sword to the shared catalog |
-| `DELETE` | `/StoreSwords/{id}` | Remove a sword from the shared catalog |
+| Method   | Route                                                | Purpose                                  |
+| -------- | ---------------------------------------------------- | ---------------------------------------- |
+| `GET`    | `/StoreCharacters`                                   | List the signed-in player's characters   |
+| `GET`    | `/StoreCharacters/{id}`                              | Get one of the player's characters       |
+| `POST`   | `/StoreCharacters`                                   | Create a character: `{ "name": "Anna" }` |
+| `PUT`    | `/StoreCharacters/{characterId}/equipment/{swordId}` | Equip a sword                            |
+| `POST`   | `/StoreCharacters/{id}/camp`                         | Rest after the required rounds           |
+| `GET`    | `/StoreMonsters?page=1&pageSize=100`                 | Browse monsters                          |
+| `GET`    | `/StoreSwords`                                       | Browse swords                            |
+| `POST`   | `/Fight`                                             | Fight a monster                          |
+| `POST`   | `/StoreMonsters`                                     | Add a monster to the shared catalog      |
+| `DELETE` | `/StoreMonsters/{id}`                                | Remove a monster from the shared catalog |
+| `POST`   | `/StoreSwords`                                       | Add a sword to the shared catalog        |
+| `DELETE` | `/StoreSwords/{id}`                                  | Remove a sword from the shared catalog   |
 
 Fight request:
 
 ```json
 {
-  "characterId": "character-guid",
-  "monsterId": "monster-guid"
+	"characterId": "character-guid",
+	"monsterId": "monster-guid"
 }
 ```
 
