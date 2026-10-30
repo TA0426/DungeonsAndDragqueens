@@ -6,8 +6,13 @@ A browser-based, text-first RPG backed by ASP.NET Core, PostgreSQL, and a small 
 
 Start the browser game, API, and PostgreSQL:
 
-```powershell
+## In Docker terminal:
+
+```
+cd "folder-for-git-repo"
+then run
 docker compose up --build
+then open probably: http://localhost:8080
 ```
 
 Open [http://localhost:8080](http://localhost:8080). PostgreSQL data is kept in the `postgres_data` volume. `docker compose down` keeps that data; `docker compose down -v` deletes it.
