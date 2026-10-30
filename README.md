@@ -15,6 +15,12 @@ docker compose up --build
 then open probably: http://localhost:8080
 ```
 
+```
+use this if it doesnt work:
+docker compose build --no-cache api
+docker compose up
+```
+
 Open [http://localhost:8080](http://localhost:8080). PostgreSQL data is kept in the `postgres_data` volume. `docker compose down` keeps that data; `docker compose down -v` deletes it.
 
 The Compose file contains development credentials and a development-only JWT key. Replace them before using this setup outside your own development machine.
