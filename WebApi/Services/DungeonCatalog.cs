@@ -21,7 +21,7 @@ public static class DungeonCatalog
         new("shadow-citadel", "Shadow Citadel", "The Umbral Reach", "Very hard", 250, 40,
             "A haunted fortress where the dead still serve their queen.",
             [["Rotting Zombie", "Fallen Knight", "Castle Gargoyle"], ["Dungeon Wizard", "Shadow Warlock", "Vampire Countess"], ["Lich Queen", "Pit Demon", "Abyssal Kraken"]], "Lich Queen",
-            "    |>>>|<<<|   \n |  ___  |  \n   | (x x) |  \n  |__/###\\__|\n /_________\\"),
+            "    |>>>|<<<|   \n  |  ___  | \n   | (x x) |  \n |__/###\\__|\n /__________\\"),
         new("celestial-rift", "Celestial Rift", "The Astral Crown", "Nightmare", 375, 42,
             "A tear between worlds filled with ancient, unstable power.",
             [["Storm Elemental", "Frost Elemental", "Cliff Harpy"], ["Labyrinth Minotaur", "Dawn Phoenix", "Castle Gargoyle"], ["Ruby Dragon", "Many-Headed Hydra", "Abyssal Kraken"]], "Pit Demon",
