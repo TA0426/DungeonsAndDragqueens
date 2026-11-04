@@ -17,7 +17,7 @@ public static class DungeonCatalog
         new("ember-wastes", "Ember Wastes", "The Ashen Expanse", "Hard", 150, 30,
             "Volcanic badlands patrolled by fire and fang.",
             [["Cinder Snake", "Orc Champion", "Fire Elemental"], ["Pit Demon", "One-Eyed Cyclops", "Dawn Phoenix"], ["Ruby Dragon", "Shadow Warlock", "Granite Golem"]], "Ruby Dragon",
-            "     /\\   /\\    \n  __/  \\_/  \\__ \n  /   (  *  )   \\ \n|____/#####\\____|\n  /_/ \\_\\"),
+            "     /\\   /\\    \n  __/  \\_/  \\__ \n  /   (  *  )   \\ \n |____/####\\____|\n /_/ \\_\\"),
         new("shadow-citadel", "Shadow Citadel", "The Umbral Reach", "Very hard", 250, 40,
             "A haunted fortress where the dead still serve their queen.",
             [["Rotting Zombie", "Fallen Knight", "Castle Gargoyle"], ["Dungeon Wizard", "Shadow Warlock", "Vampire Countess"], ["Lich Queen", "Pit Demon", "Abyssal Kraken"]], "Lich Queen",

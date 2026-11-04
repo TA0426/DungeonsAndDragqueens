@@ -235,6 +235,7 @@ byId("auth-form").addEventListener("submit", async (event) => {
 	error.textContent = "";
 	const userName = byId("username").value.trim();
 	const password = byId("password").value;
+	const isNewAccount = api.isRegistering;
 	const endpoint = api.isRegistering
 		? "/auth/register"
 		: "/auth/login";
@@ -245,6 +246,7 @@ byId("auth-form").addEventListener("submit", async (event) => {
 			body: JSON.stringify({ userName, password }),
 		});
 		setLoggedIn(result.token, result.userName);
+		byId("recruit-panel").open = isNewAccount;
 	} catch (exception) {
 		error.textContent = exception.message;
 	} finally {
@@ -386,6 +388,7 @@ function renderCharacters() {
 
 async function selectCharacter(id) {
 	api.selectedCharacterId = id;
+	byId("recruit-panel").open = false;
 	sessionStorage.setItem("dd-character", id);
 	try {
 		[api.inventory, api.dungeons] = await Promise.all([
