@@ -266,10 +266,9 @@ select:focus-visible {
 }
 .game-grid {
 	display: grid;
-	grid-template-columns: minmax(200px, 0.78fr) minmax(
-			420px,
-			1.7fr
-		) minmax(220px, 0.82fr);
+	grid-template-columns:
+		minmax(200px, 0.78fr) minmax(420px, 1.7fr)
+		minmax(220px, 0.82fr);
 	gap: 16px;
 	align-items: stretch;
 }
@@ -472,13 +471,14 @@ select:focus-visible {
 	border-bottom: 1px dashed #303a2b;
 	padding: 14px 2px;
 	color: #d6e4c7;
+	text-align: left;
 }
 .battle-log p {
 	margin: 0;
-	white-space: pre-wrap;
 }
 .battle-log .log-muted {
 	color: #718064;
+	text-align: left;
 }
 .battle-log .log-win {
 	color: var(--green);
@@ -1212,9 +1212,16 @@ body {
 .dungeon-card.cleared .dungeon-art {
 	color: #888;
 }
-.dungeon-card.cleared { cursor: pointer; }
-.dungeon-card.locked { cursor: not-allowed; opacity: .45; }
-.dungeon-card.endless { border-color: #b8a1ff; }
+.dungeon-card.cleared {
+	cursor: pointer;
+}
+.dungeon-card.locked {
+	cursor: not-allowed;
+	opacity: 0.45;
+}
+.dungeon-card.endless {
+	border-color: #b8a1ff;
+}
 .battle-combatant {
 	display: flex;
 	min-width: 0;
@@ -1309,4 +1316,12 @@ body {
 }
 .loot-card .loot-equipped {
 	color: var(--orange);
+}
+.battle-log {
+	text-align: left !important;
+}
+
+.battle-log p {
+	text-align: left !important;
+	margin-left: 0;
 }

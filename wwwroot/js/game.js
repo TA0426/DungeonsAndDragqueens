@@ -5,7 +5,7 @@ const api = {
 	characters: [],
 	monsters: [],
 	dungeons: [],
-	swords: [],
+	weapons: [],
 	armors: [],
 	inventory: [],
 	features: null,
@@ -16,14 +16,14 @@ const api = {
 
 const characterArt = {
 	Warrior:
-		"  \\  |  /\n---\\*/---\n   /#\\\n  (o.o)\n /|###|\\\n   / \\",
+		"  \\  |  /\n---\\*/---\n   /#\\\n  (o.o)\n  /|###|\\\n  / \\",
 	Wizard:
-		"    /\\\n   /  \\\n  /_**_\\\n    \\o/\n   (o.o)\n   /|\\\n   / \\",
-	Warlock: "  \\  ^  /\n   \\ | /\n  (o.o)\n  /|###|\\\n   /| |\\",
+		"    /\\\n    /  \\\n   /_**_\\\n  \\o/\n  (o.o)\n   /|\\\n   / \\",
+	Warlock: "  \\  ^  /\n  \\ | /\n  (o.o)\n  /|###|\\\n  /| |\\",
 	Ranger:
-		"   .---.\n  / o o \\\n /   ^   \\\n(  (___)  )\n   /|>---\n  / | \\",
+		"  .---.\n  / o o \\\n  /   ^   \\\n (  (___)  )\n   /|>---\n/ | \\",
 	Assassin:
-		"  /\\   /\\\n /  \\_/  \\\n |  -.-  |\n  \\ _=_ /\n   /| |\\\n  / | | \\",
+		"   /\\   /\\\n   /  \\_/  \\\n  |  -.-  |\n \\ _=_ /\n   /| |\\\n   / | | \\",
 };
 
 const monsterArt = {
@@ -350,12 +350,21 @@ function renderCharacters() {
 		deleteButton.type = "button";
 		deleteButton.className = "delete-character-button";
 		deleteButton.textContent = "DELETE CHARACTER";
-		deleteButton.setAttribute("aria-label", `Delete ${character.name}`);
+		deleteButton.setAttribute(
+			"aria-label",
+			`Delete ${character.name}`,
+		);
 		deleteButton.addEventListener("click", async (event) => {
 			event.stopPropagation();
-			if (window.prompt('Type exactly: er du sure? / are you sure?') !== "er du sure? / are you sure?") return;
+			if (
+				window.prompt("Type exactly: er du sure? / are you sure?") !==
+				"er du sure? / are you sure?"
+			)
+				return;
 			try {
-				await request(`/StoreCharacters/${character.id}`, { method: "DELETE" });
+				await request(`/StoreCharacters/${character.id}`, {
+					method: "DELETE",
+				});
 				if (api.selectedCharacterId === character.id) {
 					sessionStorage.removeItem("dd-character");
 					api.selectedCharacterId = null;
@@ -389,7 +398,7 @@ async function selectCharacter(id) {
 	}
 	renderCharacters();
 	renderDungeons();
-	renderSwords();
+	renderWeapons();
 	renderArmors();
 }
 
@@ -405,17 +414,22 @@ function renderDungeons() {
 		)
 	)
 		api.selectedDungeonId =
-			api.dungeons.find((item) => item.isUnlocked && !item.isCompleted)?.id ||
+			api.dungeons.find(
+				(item) => item.isUnlocked && !item.isCompleted,
+			)?.id ||
 			api.dungeons.find((item) => item.isUnlocked)?.id ||
 			null;
 	for (const dungeon of api.dungeons) {
-		const dungeonIndex = api.dungeons.findIndex((item) => item.id === dungeon.id);
+		const dungeonIndex = api.dungeons.findIndex(
+			(item) => item.id === dungeon.id,
+		);
 		const previous = api.dungeons[dungeonIndex - 1];
 		addOption(
 			select,
 			dungeon.id,
 			`${dungeon.name}${!dungeon.isUnlocked ? " · LOCKED" : dungeon.isEndless ? ` · WAVE ${dungeon.currentWave}` : dungeon.isCompleted ? ` · CLEARED ×${dungeon.clearCount} · REPLAY` : ` · WAVE ${dungeon.currentWave}`}`,
 		);
+		if (dungeon.id !== api.selectedDungeonId) continue;
 		const card = document.createElement("article");
 		card.className = `dungeon-card${dungeon.id === api.selectedDungeonId ? " selected" : ""}${dungeon.isCompleted ? " cleared" : ""}${!dungeon.isUnlocked ? " locked" : ""}${dungeon.isEndless ? " endless" : ""}`;
 		if (!dungeon.isUnlocked) select.lastElementChild.disabled = true;
@@ -445,11 +459,14 @@ function renderDungeons() {
 		stats.className = "card-stats";
 		stats.textContent = !dungeon.isUnlocked
 			? `Defeat ${previous?.name || "the previous dungeon"} to unlock.`
-			: `${dungeon.isEndless ? "Endless" : `Recommended: LV ${dungeon.recommendedLevel} · Sword ${dungeon.recommendedSwordDamage}+`} · ${dungeon.isBossWave ? dungeon.isEndless ? "ENDLESS BOSS" : "BOSS WAVE 51" : dungeon.isEndless ? `WAVE ${dungeon.currentWave} · BOSS EVERY 10` : `WAVE ${dungeon.currentWave}/50`} · ${dungeon.clearCount} clear${dungeon.clearCount === 1 ? "" : "s"}`;
+			: `${dungeon.isEndless ? "Endless" : `Recommended: LV ${dungeon.recommendedLevel} · Weapon ${dungeon.recommendedSwordDamage}+`} · ${dungeon.isBossWave ? (dungeon.isEndless ? "ENDLESS BOSS" : "BOSS WAVE 51") : dungeon.isEndless ? `WAVE ${dungeon.currentWave} · BOSS EVERY 10` : `WAVE ${dungeon.currentWave}/50`} · ${dungeon.clearCount} clear${dungeon.clearCount === 1 ? "" : "s"}`;
 		card.append(art, heading, world, description, stats);
 		const choose = () => {
 			if (!dungeon.isUnlocked) {
-				showMessage(`Defeat ${previous?.name || "the previous dungeon"} first.`, true);
+				showMessage(
+					`Defeat ${previous?.name || "the previous dungeon"} first.`,
+					true,
+				);
 				return;
 			}
 			api.selectedDungeonId = dungeon.id;
@@ -465,46 +482,67 @@ function renderDungeons() {
 	}
 	select.value = api.selectedDungeonId || "";
 	select.onchange = () => {
-		if (!api.dungeons.find((item) => item.id === select.value)?.isUnlocked) return;
+		if (
+			!api.dungeons.find((item) => item.id === select.value)
+				?.isUnlocked
+		)
+			return;
 		api.selectedDungeonId = select.value;
 		sessionStorage.setItem("dd-dungeon", select.value);
 		renderDungeons();
 	};
 }
 
-function renderSwords() {
-	const select = byId("sword-select");
-	const equipped = byId("equipped-sword");
+function renderWeapons() {
+	const select = byId("weapon-select");
+	const equipped = byId("equipped-weapon");
 	select.replaceChildren();
 	const character = api.characters.find(
 		(item) => item.id === api.selectedCharacterId,
 	);
-	const swords = api.inventory.filter(
-		(item) => item.type === "sword",
+	const weapons = api.inventory.filter(
+		(item) => item.type === "weapon",
 	);
-	const equippedSword = swords.find(
+	const equippedWeapon = weapons.find(
 		(item) =>
 			item.swordId === character?.swordId &&
 			item.level === character?.swordLevel,
 	);
-	equipped.textContent = equippedSword
-		? `Equipped: ${equippedSword.name} · LV ${equippedSword.level} · +${equippedSword.damage} DMG`
+	equipped.textContent = equippedWeapon
+		? `Equipped: ${equippedWeapon.name} · LV ${equippedWeapon.level} · +${equippedWeapon.damage} DMG`
 		: "Equipped: none";
-	if (!swords.length) {
-		addOption(select, "", "No swords available");
-		byId("equip-button").disabled = true;
+	if (!weapons.length) {
+		addOption(select, "", "No weapons available");
 	}
-	for (const sword of swords)
+	for (const weapon of weapons)
 		addOption(
 			select,
-			sword.id,
-			`${sword.name} · LV ${sword.level} · x${sword.quantity} · +${sword.damage} DMG`,
+			weapon.id,
+			`${weapon.name} · LV ${weapon.level} · x${weapon.quantity} · +${weapon.damage} DMG`,
 		);
-	if (swords.length) {
-		select.value = equippedSword?.id || swords[0].id;
-		byId("equip-button").disabled = false;
+	if (weapons.length) {
+		select.value = equippedWeapon?.id || weapons[0].id;
 	}
-	select.onchange = renderGearArt;
+	select.onchange = async () => {
+		renderGearArt();
+		const characterId = byId("character-select").value;
+		const weapon = api.inventory.find((item) => item.id === select.value);
+		if (!characterId || !weapon) return;
+		select.disabled = true;
+		try {
+			const result = await request(
+				`/StoreCharacters/${characterId}/equipment/${weapon.swordId}/${weapon.level}`,
+				{ method: "PUT" },
+			);
+			showMessage(
+				`${result.swordName} equipped (+${result.swordDamage} damage).`,
+			);
+			await refreshGame();
+		} catch (exception) {
+			select.disabled = false;
+			showMessage(exception.message, true);
+		}
+	};
 	renderGearArt();
 }
 
@@ -514,13 +552,13 @@ function renderGearArt() {
 	);
 	const root = byId("gear-art");
 	root.replaceChildren();
-	const sword =
+	const weapon =
 		api.inventory.find(
-			(item) => item.id === byId("sword-select").value,
+			(item) => item.id === byId("weapon-select").value,
 		) ||
 		api.inventory.find(
 			(item) =>
-				item.type === "sword" &&
+				item.type === "weapon" &&
 				item.swordId === character?.swordId &&
 				item.level === character?.swordLevel,
 		);
@@ -536,7 +574,7 @@ function renderGearArt() {
 				?.value,
 	);
 	const items = [
-		sword,
+		weapon,
 		...api.inventory.filter(
 			(item) =>
 				item.type === "armor" && selectedArmorIds.includes(item.id),
@@ -550,7 +588,7 @@ function renderGearArt() {
 		const label = document.createElement("span");
 		label.textContent =
 			item.type === "armor"
-				? `${item.name} LV ${item.level} · DEF ${item.defense}${item.swordDamageBonus ? ` · +${item.swordDamageBonus} sword` : ""}`
+				? `${item.name} LV ${item.level} · DEF ${item.defense}${item.swordDamageBonus ? ` · +${item.swordDamageBonus} weapon` : ""}`
 				: `${item.name} LV ${item.level} · +${item.damage} DMG`;
 		piece.append(art, label);
 		root.append(piece);
@@ -578,7 +616,7 @@ function renderArmors() {
 			addOption(
 				select,
 				piece.id,
-				`${piece.name} · LV ${piece.level} · x${piece.quantity} · DEF ${piece.defense}${piece.swordDamageBonus ? ` · +${piece.swordDamageBonus} sword` : ""}`,
+				`${piece.name} · LV ${piece.level} · x${piece.quantity} · DEF ${piece.defense}${piece.swordDamageBonus ? ` · +${piece.swordDamageBonus} weapon` : ""}`,
 			);
 		const equippedId = character?.[`${slot}Id`];
 		const equippedLevel = character?.[`${slot}Level`];
@@ -587,30 +625,28 @@ function renderArmors() {
 				item.armorId === equippedId && item.level === equippedLevel,
 		);
 		select.value = equippedPiece?.id || pieces[0]?.id || "";
-		const button = document.createElement("button");
-		button.className = "add-button";
-		button.type = "button";
-		button.textContent = "↗";
-		button.disabled = !character || !pieces.length;
-		select.onchange = renderGearArt;
-		button.onclick = async () => {
+		select.onchange = async () => {
+			renderGearArt();
+			const piece = api.inventory.find(
+				(item) => item.id === select.value,
+			);
+			if (!character || !piece) return;
+			select.disabled = true;
 			try {
-				const piece = api.inventory.find(
-					(item) => item.id === select.value,
-				);
 				const result = await request(
 					`/StoreCharacters/${character.id}/armor/${slot}/${piece.armorId}/${piece.level}`,
 					{ method: "PUT" },
 				);
 				showMessage(
-					`${result.armorName} equipped · defense ${result.defense}${result.swordDamageBonus ? ` · +${result.swordDamageBonus} sword damage` : ""}.`,
+					`${result.armorName} equipped · defense ${result.defense}${result.swordDamageBonus ? ` · +${result.swordDamageBonus} weapon damage` : ""}.`,
 				);
 				await refreshGame();
 			} catch (exception) {
+				select.disabled = false;
 				showMessage(exception.message, true);
 			}
 		};
-		row.append(select, button);
+		row.append(select);
 		root.append(label, row);
 	}
 	renderGearArt();
@@ -658,7 +694,7 @@ async function refreshGame() {
 		);
 		renderCharacters();
 		renderDungeons();
-		renderSwords();
+		renderWeapons();
 		renderArmors();
 		renderFeatures();
 		setStatus("CONNECTED");
@@ -907,27 +943,6 @@ byId("camp-button").addEventListener("click", async () => {
 	}
 });
 
-byId("equip-button").addEventListener("click", async () => {
-	const characterId = byId("character-select").value;
-	const item = api.inventory.find(
-		(gear) => gear.id === byId("sword-select").value,
-	);
-	if (!characterId || !item)
-		return showMessage("Choose a character and sword first.", true);
-	try {
-		const result = await request(
-			`/StoreCharacters/${characterId}/equipment/${item.swordId}/${item.level}`,
-			{ method: "PUT" },
-		);
-		showMessage(
-			`${result.swordName} equipped (+${result.swordDamage} damage).`,
-		);
-		await refreshGame();
-	} catch (exception) {
-		showMessage(exception.message, true);
-	}
-});
-
 async function chooseLoot(result) {
 	const dialog = byId("loot-dialog");
 	const root = byId("loot-choices");
@@ -945,18 +960,18 @@ async function chooseLoot(result) {
 		name.textContent = `${item.name} · LV ${item.level}`;
 		const stats = document.createElement("p");
 		stats.textContent =
-			item.type === "sword"
-				? `Sword · +${item.damage} damage`
-				: `${item.slot} · ${item.defense} defense${item.swordDamageBonus ? ` · +${item.swordDamageBonus} sword damage` : ""}`;
+			(item.type === "weapon" || item.type === "sword")
+				? `Weapon · +${item.damage} damage`
+				: `${item.slot} · ${item.defense} defense${item.swordDamageBonus ? ` · +${item.swordDamageBonus} weapon damage` : ""}`;
 		const character = api.characters.find(
 			(hero) => hero.id === api.selectedCharacterId,
 		);
 		const equippedId =
-			item.type === "sword"
+			(item.type === "weapon" || item.type === "sword")
 				? character?.swordId
 				: character?.[`${item.slot.toLowerCase()}Id`];
 		const equippedLevel =
-			item.type === "sword"
+			(item.type === "weapon" || item.type === "sword")
 				? character?.swordLevel
 				: character?.[`${item.slot.toLowerCase()}Level`];
 		const equippedStatus = document.createElement("p");
@@ -970,7 +985,7 @@ async function chooseLoot(result) {
 		const owned = api.inventory.filter(
 			(gear) =>
 				gear.type === item.type &&
-				(item.type === "sword"
+				((item.type === "weapon" || item.type === "sword")
 					? gear.swordId === item.itemId
 					: gear.armorId === item.itemId),
 		);

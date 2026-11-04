@@ -162,45 +162,45 @@
 							<summary>Recruit a character</summary>
 							<form id="new-character-form" class="inline-form">
 								<label for="new-character-name">Character name</label>
-							<fieldset class="class-choice">
-								<legend>Choose a class</legend>
-								<div id="character-class-options"></div>
-							</fieldset>
-							<fieldset class="mode-choice">
-								<legend>Game mode</legend>
-								<label
-									><input
-										type="radio"
-										name="character-mode"
-										value="hardcore"
-										checked
-									/>
-									Hardcore — character is lost at 0 HP</label
-								>
-								<label
-									><input
-										type="radio"
-										name="character-mode"
-										value="casual"
-									/>
-									Casual — character survives at 0 HP</label
-								>
-							</fieldset>
-							<div class="input-row">
-								<input
-									id="new-character-name"
-									maxlength="50"
-									minlength="2"
-									placeholder="Character name"
-									required
-								/><button
-									class="add-button"
-									type="submit"
-									aria-label="Create character"
-								>
-									+
-								</button>
-							</div>
+								<fieldset class="class-choice">
+									<legend>Choose a class</legend>
+									<div id="character-class-options"></div>
+								</fieldset>
+								<fieldset class="mode-choice">
+									<legend>Game mode</legend>
+									<label
+										><input
+											type="radio"
+											name="character-mode"
+											value="hardcore"
+											checked
+										/>
+										Hardcore — character is lost at 0 HP</label
+									>
+									<label
+										><input
+											type="radio"
+											name="character-mode"
+											value="casual"
+										/>
+										Casual — character survives at 0 HP</label
+									>
+								</fieldset>
+								<div class="input-row">
+									<input
+										id="new-character-name"
+										maxlength="50"
+										minlength="2"
+										placeholder="Character name"
+										required
+									/><button
+										class="add-button"
+										type="submit"
+										aria-label="Create character"
+									>
+										+
+									</button>
+								</div>
 							</form>
 						</details>
 					</aside>
@@ -322,20 +322,12 @@
 						<div id="dungeon-list" class="dungeon-list"></div>
 						<div class="equipment-block">
 							<p class="eyebrow">EQUIPMENT</p>
-							<p id="equipped-sword" class="card-stats">
+							<p id="equipped-weapon" class="card-stats">
 								Equipped: none
 							</p>
-							<label for="sword-select">Equip a sword</label>
+							<label for="weapon-select">Choose a weapon</label>
 							<div class="input-row">
-								<select id="sword-select"></select
-								><button
-									id="equip-button"
-									class="add-button"
-									type="button"
-									aria-label="Equip selected sword"
-								>
-									↗
-								</button>
+								<select id="weapon-select"></select>
 							</div>
 							<div id="armor-slots" class="armor-slots"></div>
 							<div

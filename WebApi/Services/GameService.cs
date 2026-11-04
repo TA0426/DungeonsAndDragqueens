@@ -107,7 +107,7 @@ public class GameService(
                 var swords = await database.Swords.AsNoTracking().ToListAsync();
                 var armors = await database.Armors.AsNoTracking().ToListAsync();
                 var pool = swords.Where(item => (item.Damage <= 20 ? 1 : item.Damage <= 32 ? 2 : 3) == tier)
-                    .Select(item => new LootChoice("sword", item.Id, item.Name, "", 1, item.Damage, 0, 0, item.AsciiArt))
+					.Select(item => new LootChoice("weapon", item.Id, item.Name, "", 1, item.Damage, 0, 0, item.AsciiArt))
                     .Concat(armors.Where(item => (item.Defense <= 3 ? 1 : item.Defense <= 7 ? 2 : 3) == tier)
                         .Select(item => new LootChoice("armor", item.Id, item.Name, item.Slot, 1, 0, item.Defense, item.SwordDamageBonus, item.AsciiArt)))
                     .OrderBy(_ => Random.Shared.Next()).Take(3).ToList();
@@ -295,7 +295,7 @@ public class GameService(
         var swords = await database.Swords.AsNoTracking().ToListAsync();
         var armors = await database.Armors.AsNoTracking().ToListAsync();
         var options = swords.Where(item => (item.Damage <= 20 ? 1 : item.Damage <= 32 ? 2 : 3) == tier)
-            .Select(item => new LootChoice("sword", item.Id, item.Name, "", 1, item.Damage, 0, 0, item.AsciiArt))
+			.Select(item => new LootChoice("weapon", item.Id, item.Name, "", 1, item.Damage, 0, 0, item.AsciiArt))
             .Concat(armors.Where(item => (item.Defense <= 3 ? 1 : item.Defense <= 7 ? 2 : 3) == tier)
                 .Select(item => new LootChoice("armor", item.Id, item.Name, item.Slot, 1, 0, item.Defense, item.SwordDamageBonus, item.AsciiArt)))
             .OrderBy(_ => Random.Shared.Next()).Take(3).ToList();

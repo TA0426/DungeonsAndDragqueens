@@ -141,20 +141,21 @@ public class CharacterService(StoreMonstersContext database)
         {
             var sword = item.SwordId is Guid swordId ? swords.GetValueOrDefault(swordId) : null;
             var armor = item.ArmorId is Guid armorId ? armors.GetValueOrDefault(armorId) : null;
-            return new InventoryItemResponse(item.Id, item.SwordId, item.ArmorId, sword?.Name ?? armor?.Name ?? "Unknown gear", sword is null ? "armor" : "sword", armor?.Slot ?? "", item.Level, item.Quantity, GearStats.AtLevel(sword?.Damage ?? 0, item.Level), GearStats.AtLevel(armor?.Defense ?? 0, item.Level), GearStats.AtLevel(armor?.SwordDamageBonus ?? 0, item.Level), sword?.AsciiArt ?? armor?.AsciiArt ?? "");
+			return new InventoryItemResponse(item.Id, item.SwordId, item.ArmorId, sword?.Name ?? armor?.Name ?? "Unknown gear", sword is null ? "armor" : "weapon", armor?.Slot ?? "", item.Level, item.Quantity, GearStats.AtLevel(sword?.Damage ?? 0, item.Level), GearStats.AtLevel(armor?.Defense ?? 0, item.Level), GearStats.AtLevel(armor?.SwordDamageBonus ?? 0, item.Level), sword?.AsciiArt ?? armor?.AsciiArt ?? "");
         }).ToList();
     }
 
     public async Task AddLootToInventoryAsync(Guid characterId, LootChoice choice)
     {
         var matching = database.CharacterInventoryItems.Where(item => item.CharacterId == characterId && item.Level == choice.Level);
-        var row = choice.Type == "sword"
+        var isWeapon = choice.Type is "weapon" or "sword";
+        var row = isWeapon
             ? await matching.FirstOrDefaultAsync(item => item.SwordId == choice.ItemId)
             : await matching.FirstOrDefaultAsync(item => item.ArmorId == choice.ItemId);
         if (row is null)
         {
             row = new CharacterInventoryItem { CharacterId = characterId, Level = choice.Level, Quantity = 0 };
-            if (choice.Type == "sword") row.SwordId = choice.ItemId;
+			if (isWeapon) row.SwordId = choice.ItemId;
             else row.ArmorId = choice.ItemId;
             database.CharacterInventoryItems.Add(row);
         }
@@ -164,10 +165,10 @@ public class CharacterService(StoreMonstersContext database)
         {
             row.Quantity -= 3;
             var upgradedLevel = row.Level + 1;
-            var upgraded = await database.CharacterInventoryItems.FirstOrDefaultAsync(item => item.CharacterId == characterId && item.Level == upgradedLevel && (choice.Type == "sword" ? item.SwordId == choice.ItemId : item.ArmorId == choice.ItemId));
+			var upgraded = await database.CharacterInventoryItems.FirstOrDefaultAsync(item => item.CharacterId == characterId && item.Level == upgradedLevel && (isWeapon ? item.SwordId == choice.ItemId : item.ArmorId == choice.ItemId));
             if (upgraded is null)
             {
-                upgraded = new CharacterInventoryItem { CharacterId = characterId, SwordId = choice.Type == "sword" ? choice.ItemId : null, ArmorId = choice.Type == "armor" ? choice.ItemId : null, Level = upgradedLevel, Quantity = 0 };
+				upgraded = new CharacterInventoryItem { CharacterId = characterId, SwordId = isWeapon ? choice.ItemId : null, ArmorId = choice.Type == "armor" ? choice.ItemId : null, Level = upgradedLevel, Quantity = 0 };
                 database.CharacterInventoryItems.Add(upgraded);
             }
             upgraded.Quantity++;
@@ -184,7 +185,7 @@ public class CharacterService(StoreMonstersContext database)
         var character = await database.Characters.FindAsync(characterId);
         if (character is null) return;
 
-        if (choice.Type == "sword")
+		if (choice.Type is "weapon" or "sword")
         {
             if (character.SwordId is null)
             {
@@ -213,7 +214,7 @@ public class CharacterService(StoreMonstersContext database)
     {
         var character = await database.Characters.FindAsync(characterId);
         if (character is null) return;
-        if (choice.Type == "sword" && character.SwordId == choice.ItemId && character.SwordLevel == newLevel - 1) character.SwordLevel = newLevel;
+		if ((choice.Type is "weapon" or "sword") && character.SwordId == choice.ItemId && character.SwordLevel == newLevel - 1) character.SwordLevel = newLevel;
         if (choice.Type != "armor") return;
         if (character.BootsId == choice.ItemId && character.BootsLevel == newLevel - 1) character.BootsLevel = newLevel;
         if (character.ChestId == choice.ItemId && character.ChestLevel == newLevel - 1) character.ChestLevel = newLevel;
